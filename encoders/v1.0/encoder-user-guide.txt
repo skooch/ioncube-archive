@@ -1,0 +1,408 @@
+                   The ionCube Encoder - Version 1.0.2
+                   -----------------------------------
+
+INTRODUCTION
+------------
+
+The standalone ionCube PHP encoder represents an affordable PHP encoding
+solution, and in using the technique of compiled code encoding to not encode
+script source, maximises both code protection and run time performance.
+
+With our unique "Hybrid" Loader, users of encoded scripts can run them 
+either by installing the Loader as a server extension, or with the Loader
+installed when needed as a runtime module, requiring no server changes or
+even a server restart. Additionally, Loader compatibility with Zend Optimiser
+and our popular PHP Accelerator ensures that using encoded files requires
+no compromises.
+
+Choosing the ionCube encoder as your encoding solution provides you with 
+not only a highly sophisticated tool for PHP script protection, but also
+ensures that your scripts can be loaded on the widest range of
+server configurations. 
+
+
+ENCODER FEATURES
+----------------
+
+This version of the encoder wraps the ionCube PHP Encoding API with a command
+line interface, and is designed particularly with website integration and
+automation of encoding in mind.
+
+The Encoder and can be used to:
+
+* Syntax check a single file or multiple directories, with easy integration 
+  into emacs/xemacs for instant access to the point of errors
+* Encode a single file
+* Encode a directory hierarchy
+
+Encoding options support:
+
+* Enabling asp tags (<% %>). Disabled by default.
+* Disabling short open tags (<? ?>). Enabled by default.
+* Allowing call time references. Disabled by default.
+* Generation of encoded files to expire on a given date.
+* Generation of encoded files to expire after a time period.
+* Restricting encoded files to an IP address or IP address range.
+* Verifying that encoded files are PHP readable
+* Disabling run-time Loader if not required.
+* Normal, faster (2x), or fastest (4x) encoding performance. Ideal for cases
+  where speed of encoding is more important than speed of loading (uses
+  different file formats and may offer slightly less optimal runtime
+  performance).
+* Further reducing size of encoded files without impacting load performance.
+
+Directory (project) encoding options allow:
+
+* Including and excluding of files and directories based on name 
+  and/or patterns. Multiple include/exclude statements may be used as
+  required.
+* Using hard links rather than file copying for adding non-encoded files to
+  the target directory
+* Disabling preserving of file times, permissions and ownership. The default
+  is to preserve file times and permissions on files and directories.
+  If encoding root, file and directory ownership is also preserved by default,
+  but can be overridden with different owner/group settings.
+* Only adding encoded files to a target directory.
+* Erasing, renaming, or merging with a target directory if it already exists.
+
+
+USING THE ENCODER
+-----------------
+
+A list of all command line arguments is given at the end of this user
+guide. Running the encoder with -h or --help will also display a summary.
+
+Due to the rich feature set, most options are of the long-format, starting
+with -- and having a long name. Options can however be abbreviated to the
+shortest string that makes them unique. The encoder will warn if an option is 
+ambiguous, and not simply use the first matching option that perhaps wasn't 
+what you intended.
+
+By convention, command options are usually passed before non-option 
+parameters, but the encoder handles options specified in any position.
+You may find it more natural to place the -o option to specify the encoding
+target after the source argument, and the encoder supports that. e.g
+
+  ioncube_encoder_1.0.2 file.php -o file-encoded.php
+
+The order of options doesn't generally matter, although is important for
+--include and --exclude. The order that you specify items to include or
+exclude affect which files or directories are actually included.
+This is discussed further below.
+
+
+* SYNTAX CHECKING
+
+To syntax a single file or directory, run the encoder with either -S or
+--syntax-check and specify one or more files or directories. By default the
+encoder will only show errors (see the section on error reporting for more
+details). If --verbose is used then each file checked will be shown even if
+no errors are encountered.
+
+The use of the options affecting the PHP language (asp tags, short open
+tags, call time references) affect syntax checking, as well as --include and
+--exclude determining which files are processed. Running the syntax checker
+with --verbose can be a good way to see the effect of using the include and
+exclude options.
+
+
+
+* ENCODING A FILE
+
+Encoding requires a source and a target, specified with the -o option.
+In the simplest form, the usage is:
+
+  ioncube_encoder_1.0.2 <source> -o <output>
+
+If encoding a file, simply specify the source file to be encoded and the
+output file. Encoding a directory is more detailed.
+
+
+* ENCODING A DIRECTORY
+
+As an example, let's assume that we wish to encode a directory of files
+with path /src/my-project as a directory /encoded/my-project
+
+If /encoded/my-project doesn't exist yet, the encoder can be run as just
+
+  ioncube_encoder_1.0.2 /src/my-project -o /encoded/my-project
+
+Other options to affect encoding can be specified as required, and will
+encode all files ending with .php or .phtml to the new directory. All 
+subdirectories in the source hierarchy will be created in the target, and any
+non-encoded files will be copied and symbolic links created. The directory
+and file times and permissions will also be the same as for /src/my-project.
+If running as root, file ownership will also be copied from the /src/my-project
+to /encoded/my-project.
+
+If we decide to re-encode, the same command will now give an error as
+the target directory already exists. The encoder will not blindly overwrite
+a target directory and offers three choices for what it should do in this
+case. 
+
+--erase will erase the contents of the target directory before encoding.
+
+--rename will rename the target directory as /encoded/my-project.n 
+Starting from 1, 'n' will be the smallest number that produces a directory
+name that doesn't exist. 
+
+--merge will preserve the existing target directory, overwriting files that
+exist already and creating new ones as necessary. Any files in the target
+directory that are not present in the source directory will be preserved.
+
+You must always specify one of the above when encoding to a target that
+already exists.
+
+One other restriction that the encoder tries to enforce is that you can not
+encode directories that lie within the target tree, and you can not specify
+a target directory that is within the source tree.
+
+
+* Including / Excluding Files
+
+The --include and --exclude options can be used and combined to determine
+which files are to be encoded. The wildcard character * may be used to 
+wildcard part of a filename, and [] may be used to specify a set of characters.
+Directories should be specified by appending the name with a /
+
+Examples:
+
+To encode files ending in .inc, in addition to the defaults of .php and .phtml,
+use:
+
+  --include=*.inc
+
+To not encode files in a config directory (and subdirectories), use:
+
+  --exclude=config/
+
+To not encode config files except in config/private/, use:
+
+  --exclude=config/ --include=config/private/
+
+As above, but allow help.php in the /config/private directory to not be
+encoded, use:
+
+  --exclude=config/ --include=config/private/ --exclude=config/private/help.php
+
+
+* Time Limiting Files
+
+Encoded files can be time limited by either specifying an expiry date or
+period.
+
+To specify an absolute date, use:
+
+--expire-on=<yyyy-mm-dd>
+
+e.g. --expire-on=2002-10-01
+
+To specify a period in seconds, minutes, hours or days, use:
+
+--expire-in=<period>
+
+e.g. --expire-in=7d would expire files in 7 days,
+     --expire-in=8h would expire files in 8 hours
+
+You can use 's', 'm', 'h', and 'd' after a number to denote seconds, minutes,
+hours or days.
+
+Note that times are based on UTC. Unix expects that system clocks are set to
+UTC, and that a correct setting of timezones is used to offset the clock. 
+If, however, a user has incorrectly set their system clock then the actual
+expiry time may be different.
+
+* IP Limiting Files
+
+Encoded files can be restricted to only load on machines with a specific
+address or within a subnet of addresses. 
+
+To restrict to a single IP address, use:
+
+--allowed-ip-addr=<a.b.c.d>
+
+e.g. --allowed-ip-addr=192.168.1.12
+
+would restrict files to only that ip address. The ip address is tested 
+against the ip address reported for the server, and so whilst a machine
+may have that address as one of several addresses, the file will only
+load if the web server is using that address for the domain being served.
+
+To restrict to a set of hosts, specify a server mask. This uses the same
+format as server masks when configuring networks, and specifies which bits
+should be tested in the server address.
+
+The mask is specified as
+
+--allowed-ip-mask=<a.b.c.d>
+
+e.g. --allowed-ip-addr=192.168.1.0 --allowed-ip-mask=255.255.255.0
+
+would allow all hosts from 192.168.1.0 to 192.168.1.255 to load the encoded
+files but no others. 
+
+
+ERROR REPORTING
+---------------
+
+Syntax errors are reported in emacs/xemacs style format of
+
+  filename:line number:message
+
+This offers easy integration with emacs/xemacs and direct access to the point
+of error in source files. For example, given a directory of PHP files called
+myproject, running the xemacs 'compile' command and specifying the compiler
+as:
+
+  ioncube_encoder_1.0.2 -S myproject
+
+will syntax check all php files and reports errors in an emacs buffer. 
+With the default xemacs key bindings, simply hitting ctrl-X ` will run the
+'next-error' function and visit each file with an error and place the cursor
+at the line containing the error.
+
+
+ENCODER PERFORMANCE
+-------------------
+
+The encoder is fast, and by default uses an encoding format and performs
+an analysis that should yield files that will perform the best at runtime.
+However if performance of the encoder itself is critical, or you just can't
+wait for your encoded files, specifying --faster or --fastest will speed up the
+encoding process. In tests, --faster typically halves the encoding time,
+and --fastest halves the time again. These results may depend on the 
+performance of the server. The 'faster to encode' data formats may sometimes
+increase file size although not necessarily. 
+
+There is also a --compress option that is often able to reduce the size of
+files by a small amount. This step is different to most compression algorithms
+in that it does not affect run time performance.
+
+
+SUMMARY OF ENCODER OPTIONS
+--------------------------
+
+Encoding
+--------
+
+-o <target file or directory>
+Specify the target file or directory.
+
+-S | --syntax-check
+Check the syntax of a file or directory. No encoding is performed, but files
+are parsed and any errors reported. 
+
+--expire-on=<yyyy-mm-dd>
+Expire files on the given date.
+
+--expire-in=<period>
+Expire files this period after encoding. The period is given 
+as <number><factor>, where <factor> may be one of h,d,w,m to denote hours, 
+days, weeks and months. e.g. 'expire-in 7d' means expire in 7 days.
+
+--use-hard-links
+When encoding a directory, use hard links to add non-encoded files into the
+destination directory structure rather than copying.
+
+--only-include-encoded-files
+When encoding a directory hierarchy only include encoded files into the
+destination directory structure.
+
+--include=<pattern> | --exclude=<pattern>
+Include or exclude files or directories matching <pattern>. Patterns ending
+with a trailing '/' match directories. These options may be specified 
+more than once, and are applied in order when determining whether
+or not a file or directory should be included or excluded. The default rules
+match all files ending with .php or .phtml in all directories. Excluding
+a directory excludes that directory and all subdirectories, although
+subdirectories may then be included again with --include. 
+e.g --exclude=a/ --include=a/b/c would exclude directories, a, a/b, a/d, but
+include a/b/c, a/b/c/c1 etc.
+
+--allow-asp-tags
+Allow the tags <% and %> to be recognised as delimiters for PHP code.
+
+--no-short-open-tags
+Disables the use of <? and ?> to surround PHP code. 
+
+--allow-call-time-pass-reference
+Allow variables to be passed by reference at the point of making a function
+call. Note that this is a deprecated PHP feature, and reference arguments 
+should instead be specified in the function definition.
+ 
+--without-runtime-loader-support
+Don't generate encoded files capable of installing the Loader at runtime.
+By default encoded files are generated that will attempt to find and install
+the Loader at runtime if the Loader is not already installed. You may want
+to use this option if you know that encoded files will always be used on
+a system where the Loader is installed as an extension in php.ini, and files
+will be slightly smaller.
+
+--without-keeping-file-perms
+Don't apply file permissions from source files to target files.
+
+--without-keeping-file-times
+Don't apply file access times from source files to target files.
+
+--without-keeping-file-owner
+Don't apply file ownership from source files to target files when 
+running the encoder as root.
+
+--apply-file-user=<user id/name>
+Apply the given file user id or name to target files instead of the
+source file user id when running the encoder as root.
+
+--apply-file-group=<group id/name>
+Apply the given file group id or name to target files instead of the
+source file group id when running the encoder as root.
+
+--rename-target
+Rename the target file/directory if it already exists.
+
+--erase-target
+Erase the target file/directory if it already exists.
+
+--merge-target
+Merge source files into an already existing target directory.
+
+--faster
+Use a medium speed encoding technique, may increase loading time.
+
+--fastest
+Use the fastest encoding technique, may increase loading time.
+
+--compress
+Apply a further analysis stage to possibly reduce file size without increasing
+loading time.
+
+--verify
+Verify that each encoded file is a valid PHP file and can be read by a PHP
+system not running the Loader.
+
+--allowed-ip-addr=<a.b.c.d>
+Specify an ip address in dot notation that the encoded scripts are allowed
+to run on, e.g. 192.168.1.0  If not specified an encoded script will run 
+on any ip address. An allowed-ip-mask may also be set to allow
+multiple addresses to be matched within a given subnet.
+
+--allowed-ip-mask=<a.b.c.d>
+Specify an ip mask in dot notation to permission a group of machines. Defaults
+to 255.255.255.255 if an allowed-ip-addr is specified.
+e.g. A mask of 255.255.255.0 would and address of 192.168.1.0 would permission
+encoded scripts for machines in the group 192.168.1.0 to 192.168.1.255 
+inclusive.
+
+Miscellaneous
+-------------
+
+-v | --verbose
+Display information during encoder operations.
+
+-V | --version
+Display version information.
+
+-h | --help
+Display help.
+
+
+Copyright (c) 2002 ionCube.com                       Last revised 16-Sep-2002

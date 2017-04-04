@@ -1,0 +1,120 @@
+		ionCube PHP Encoder Changes
+		---------------------------
+
+Please see the Encoder user guide and GUI documentation (Windows only)
+for details on new features mentioned below.
+
+Version 6.0.18 - 8 December 2005
+-------------------------------
+
+* Fixed Encoder license problem when multiple instances of Encoder
+  were run simultaneously.
+
+Version 6.0.17 - 8 December 2005
+-------------------------------
+
+* Fixed issue with licensing of Encoder.
+
+Version 6.0.16 - 27 November 2005
+--------------------------------
+
+* Fixed issue with exceptions (PHP 5 Encoder).
+
+Version 6.0.15 - 22 November 2005
+--------------------------------
+
+* Try/catch support bug fixed (PHP 5 Encoder).
+
+Version 6.0.14 - 27 October 2005
+--------------------------------
+
+* Improved handling of PHP language errors when encoding files.
+
+Version 6.0.13 - 29 September 2005
+----------------------------------
+
+* Fix when recognising that a file is a shellscript PHP file.
+
+Version 6.0.12 - 7 September 2005
+---------------------------------
+
+* Special Edition GUI: blank line now maintained at end of Server Restrictions Grid
+  on dynamic fields tab.
+
+
+Version 6.0.11 - 5 September 2005
+---------------------------------
+
+* Fixed bug related to Expire On field on Windows GUI License Settings dialog
+* Fixed bug with Windows GUI License Properties - it is no longer necessary to press 
+  return after entering a property value before clicking Generate License.
+
+Version 6.0.10 - 1 September 2005
+---------------------------------
+
+* Minor bugfix with revoke file naming.
+
+Version 6.0.9 - 30 August 2005
+------------------------------
+
+* Display error if an encoded file is specified as the source when
+  encoding.
+* Windows GUI: warning dialog if automatic Loader license validation is 
+  disabled.
+
+Version 6.0 - Version 6.0.8 - 23 August 2005
+--------------------------------------------
+
+* Added feature to decode generated licenses.
+* Installing IPF evaluation is now optional.
+* Resolved time-related problem related to licensing the Encoder on Windows.
+* Fixed problem with make_license when --select-server-adapter was used but 
+  the server interface was the loopback.
+* Fixed problem with the 'strict language usage' flag on Windows.
+* No longer allow an empty license passphrase in the GUI.
+* Include 4.4 Loader with Encoder installation.
+* Fix when the Linux Encoder was invoked using the PATH environment variable.
+
+Version 6.0 - August 2005
+-------------------------
+
+* License files: new 'make_license' program, option for encoded files 
+  to require a license (Pro, Cerberus, bundled with PHP 5 Encoder)
+* Error callback file: specify a file and function that gets triggered 
+  if the Loader reports an error.
+* --update-target: only process files which have modified time after
+  the modified time of the target.
+* Support for encoding PHP shell scripts.
+* Encoder licenses can now be revoked with --revoke-license,
+  allowing an Encoder installation to be moved to a new machine
+* If the Loader causes the script to exit, the exit code is the sum of
+  200 plus the ID of the Loader Event (see User Guide)
+* Bugfix: transparency of icons in Windows icon extension.
+* Windows GUI: Icon extension can recognise PHP shell scripts and 
+  encoded files with no preamble.
+* --include-if: extended to prevent encoded files from including 
+  non-encoded files. Now exposed in Windows GUI.
+* --disable-auto-prepend-apppend: prevent execution if the php.ini
+  settings auto_prepend_file or auto_append_file are used.
+* Updated dynamic fields interface, added license dynamic fields
+  (Special Edition Windows GUI only).
+* Constants defined in the Loader for Loader Events.
+* Loader API enhanced.
+* When encoding a single file, the Encoder exits with code 7 
+  if an error occurs instead of 0.
+* Bugfix: PHP 5 Encoder bug when overriding properties 
+  in derived classes.
+* Bugfix: bug related to --allow-encoding-into-source on Windows.
+* Detect whether target file is the same as the source file on Windows.
+* Bugfix: Removing .php, .php4, .php3 default patterns from extensions list 
+  with Windows Encoder GUI now works as expected.
+* Improved 'parse error' messages with Windows Encoder GUI when used with
+  the PHP 5 Encoder.
+* Files starting with '.' (for example .htaccess) now appear in the GUI source tree
+
+Version 5.0.2 - May 2005
+------------------------
+
+* Bugfix: Exceptions were not handled correctly by the PHP 5 Encoder.
+* Bugfix: PHP 4 Encoder crashed if 'parent::myclass' was used 
+  when myclass had no parent class.

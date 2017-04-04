@@ -1,0 +1,183 @@
+Il seguente è un elenco delle opzioni dei comandi dell'encoder.
+Fare riferimento alla guida utente per ulteriori dettagli.
+
+-S | --syntax-check
+Controlla la sintassi di un file o di una directory.
+
+-o <file o directory di destinazione>
+Specifica il file o la directory di destinazione.
+
+--into <directory>
+Alternativa a -o per indicare una destinazione per la codifica.
+Indica una directory all'interno della quale codificare i file o
+le directory, invece che il nome della destinazione stessa.
+
+--expire-on <aaaa-mm-gg>
+Fa scadere i file nella data indicata.
+
+--expire-in <periodo>
+Fa scadere i file dopo il periodo indicato. Es. 7d (7 giorni)
+o 8h (8 ore).
+
+--use-hard-links
+Usa gli hard link per aggiungere i file non codificati nella
+directory di destinazione.
+
+--only-include-encoded-files
+Copia soltanto i file codificati nella directory di destinazione.
+
+--include <pattern> | --exclude <pattern>
+Include o esclude dalla codifica i file o le directory che
+corrispondono al <pattern>. I file esclusi sono copiati nella
+directory di destinazione in modo non codificato.
+
+--keep <pattern> | --ignore <pattern>
+Mantiene o ignora i file o le directory che corrispondono al
+<pattern> dall'inclusione nella directory di destinazione.
+Es.: --ignore RCS/ --ignore '*~'
+
+--allow-asp-tags
+Permette che i tag <% e %> siano riconosciuti come delimitatori
+del codice PHP.
+
+--no-short-open-tags
+Disabilita l'uso dei tag <? e ?> per delimitare il codice PHP.
+
+--strict-php
+Abilita il controllo stretto dell'uso del PHP. Questa opzione
+abilita gli avvertimenti se vengono usate caratteristiche deprecate
+del linguaggio o se vengono passate variabili per referenza nelle
+chiamate a funzioni.
+
+--without-keeping-file-perms
+Non applica i permessi dei file di sorgente a quelli di destinazione.
+
+--without-keeping-file-times
+Non applica la data di accesso dei file di sorgente a quelli di
+destinazione.
+
+--without-keeping-file-owner
+Non applica il proprietario dei file di sorgente a quelli di
+destinazione quando l'encoder è lanciato da root.
+
+--apply-file-user <uid/nome utente>
+--apply-file-group <gid/nome gruppo>
+Applica il nome o l'id del gruppo od utente indicato ai file di
+destinazione quando l'encoder è lanciato da root.
+
+--rename-target
+Rinomina il file o la directory di destinazione se già esistente.
+
+--erase-target
+Elimina il file o la directory di destinazione se già esistente.
+
+--merge-target
+Unisce i file di sorgente ad una directory di destinazione già
+esistente.
+
+--optimise <more|max>
+--optimize <more|max>
+Ottimizza maggiormente o al massimo per produrre file ancor più efficienti.
+
+--allowed-server [<nomi dei server>][@<indirizzi ip>][{<mac address>}]
+Specifica i server nei quali gli script sono autorizzati all'uso.
+L'indicazione del server può opzionalmente contenere uno o più nomi di
+server, uno o più indirizzi ip e un solo mac address.
+Es.:
+192.168.1.8 (IP singolo)
+192.168.1.5-9 (range di IP da 192.168.1.5 a 192.168.1.9)
+www.foo.com (server con nome www.foo.com)
+www.foo.com@192.168.1.2 (server www.foo.com con IP 192.168.1.2)
+www.foo.com{00:02:08:02:e0:c8} (server www.foo.com con mac 00:02:08:02:e0:c8)
+Per maggiori dettagli consultare la Guida Utente.
+
+--verify
+Verifica che ogni file codificato sia un file PHP valido e che possa essere
+letto dall'interprete PHP senza che vi sia il loader caricato.
+
+--without-runtime-loader-support
+Non crea file codificati che installano il loader durante il caricamento.
+
+--without-loader-check
+Implica --without-runtime-loader-support e non genera nessun preambolo.
+
+--message-if-no-loader <testo>
+Specifica il messaggio da mostrare nel caso che il loader non possa essere
+installato.
+
+--action-if-no-loader <codice php>
+Specifica l'azione da eseguire nel caso che il loader non possa essere
+installato.
+
+--loader-path <percorso>
+Specifica il percorso completo del loader per il caricamento dinamico.
+
+--preamble-file <file>
+Utilizza come preambolo il contenuto del file <file>. I commenti specificati
+con --add-comments o con --add-comment verranno comunque aggiunti.
+
+--add-comments <file>
+Aggiunge del testo nell'intestazione da un file come linee commentate.
+Può essere impiegato più volte.
+
+--add-comment <text>
+Aggiunge del testo come linea commentata nell'intestazione. Può essere
+impiegato più volte.
+
+--project-file <file>
+Prende le opzioni di codifica dal file indicato seguito da una qualsiasi
+altra opzione nella linea di comando.
+
+--create-project
+Se è stato specificato un file di impostazioni per il progetto, crea il file
+del progetto in base alle impostazioni da linea di comando. Il file del
+progetto viene sovrascritto se già esistente.
+
+--update-project
+Se un file di progetto è stato specificato, aggiorna il file in base alle
+impostazioni lette e ad opzioni aggiuntive nella linea di comando.
+
+--allow-encoding-into-source
+Consente che la directory di destinazione sia all'interno della directory
+sorgente. Di norma l'encoder evita di codificare le directory all'interno
+di quella sorgente come precauzione e per evitare risultati inaspettati o
+sovrascritture accidentali dei file sorgente.
+
+--loader-event 'chiave=testo'
+Specifica un messaggio personalizzato che deve apparire quando si verificano
+certi eventi nel loader. La chiave può essere una tra 'corrupt-file',
+'expired-file', 'no-permissions', 'clock-skew', mentre il testo è il messaggio
+che deve usare il loader nel caso rispettivamente che un file sia corrotto,
+che sia espirato, che non abbia permessi basati sull'ip o che l'ora di sistema
+sia di oltre 24 ore antecedente a quella di effettiva codifica del file. Il
+messaggio può contenere delle opzioni di formattazione che vengono espanse
+durante l'esecuzione. %f diventa il nome del file che ha causato l'evento,
+e per l'evento 'no-permissions', %p diventa la ragione.
+
+--property 'nome[=valore][, ...]' o --properties 'nome[=valore][, ...]'
+Definisce le proprietà per il file ed un valore opzionale. Le proprietà possono
+essere lette tramite le API del loader e la loro esistenza può essere fatta
+diventare un requisito per essere incluso. I valori possono essere un numero,
+una stringa (eventualmente delimitata da ' o "), o un array, delimitato da { }.
+Le definizioni di più proprietà devono essere separate da ','. Queste due
+opzioni svolgono la medesima funzione.
+
+--include-if-property 'nome=[valore][, ...]'
+Consente ai file di essere inclusi soltanto se le proprietà indicate sono
+tutte definite dal file. Può essere usato più di una volta per specificare
+set multipli di proprietà valide.
+
+-k <chiave di valutazione> | --key <chiave di valutazione>
+Specifica la chiave di valutazione per questa copia dell'encoder.
+
+-v | --verbose
+Mostra maggiori informazioni durante le operazioni di codifica.
+
+-V | --version
+Mostra informazioni sulla versione dell'encoder.
+
+-h | --help
+Mostra l'aiuto.
+
+Per maggiori informazioni fare riferimento alla Guida Utente dello ionCube Encoder.
+

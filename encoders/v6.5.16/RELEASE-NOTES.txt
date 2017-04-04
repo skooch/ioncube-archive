@@ -1,0 +1,522 @@
+
+	     ionCube PHP Encoder 6.5 Release Notes
+	     -------------------------------------
+
+
+Version 6.5.16 - 8 July 2009
+----------------------------
+
+* Enhancements and simplifications to product licensing. 
+
+  The license request procedure now produces a single license request file 
+  instead of one for each network interface.
+
+  On Windows, product licensing related files are no longer stored in the 
+  product installation folder. Instead, a separate licensing folder is used.
+
+  For convenience, a new shortcut is installed to browse the licensing folder,
+  and the license request and revoke shortcuts will also open the licensing
+  folder with Explorer and select the corresponding license request or revoke
+  file.
+
+  Uninstalling the software prior to moving to a different machine will now
+  automatically run the revoke license procedure, open Explorer on the
+  licensing folder and prompt to submit the revoke file for processing in
+  order to free the license.
+
+* Launching as administrator on Vista and Windows 7 is no longer necessary.
+
+* Project files for the command line Encoder can now have options given on
+  multiple lines and are auto-generated with one option per line.
+
+* Default runtime preamble enhanced to support runtime install of
+  Loaders from the module extensions directory, even when using PHP 5.2.5 and
+  above.
+
+* GUI: Changes and enhacements to menu hot keys, and shortcut added for
+  syntax checking.
+
+* GUI: Main window right-click context menu enhanced.
+
+* GUI: Exported batch files now end with %* instead of %1.
+
+* License and file based domain name restrictions can now contain accented
+  characters.
+
+* Fix to store Loader version in Encoder project files when
+  using option --min-loader-version.
+
+* Code generation changes to foreach.
+
+
+Version 6.5.15 - 13 October 2008
+--------------------------------
+
+Enhancement to avoid class not found warnings being issued on unused catch
+blocks where a class is not defined.
+
+
+Version 6.5.14 - 20 August 2007
+-------------------------------
+
+First release of command line version for OS X Darwin on x86.
+No functional changes to 6.5.13.
+
+
+Version 6.5.13 - 1 August 2007
+------------------------------
+
+* Enhancement to avoid a spurious notice message that could be emitted when
+  running code on PHP 5.2.1+ of the following form:
+    foreach ($o->prop as $v) { }
+  where the value of prop is obtained dynamically via __get(). 
+  
+* Change so that the instanceof operator will evaluate to false for an
+  undefined class at runtime and not report the class as undefined.
+
+* \r\n sequences in custom preambles are now converted to \n by the Unix
+  Encoders and not just the Windows Encoder. 
+
+* The newline at the end of ASCII encoded files is no longer present. 
+  This keeps a particular forum plugin manager happy that incorrectly
+  considered a newline at the end of encoded files to be a problem.
+
+* GUI: Double clicking file related messages in the event log tree now opens
+  the associated file.
+
+* GUI: New option to show Encoder command line.
+
+* GUI (Special Edition): Fix to include any empty folders when creating
+  tar.gz archives.
+
+* GUI: Change to support URL in the About dialog.
+
+* GUI: Blank lines in custom header comments are now preserved.
+
+* GUI: Minor cosmetic changes.
+
+* License generator: Fix for #d appearing if creating license files on 
+  FreeBSD and exposing the license expiry date.
+
+* License generator: Minor fixes and changes.
+
+
+Version 6.5.12 - 20 February 2007
+---------------------------------
+
+* Enhancement to allow classes derived from builtin classes (e.g. Exception)
+  to be declared after their own subclasses.
+
+* New command line option added for declaring custom autoglobals; e.g.
+
+    --register-autoglobal _MYAUTO
+
+  will process use of $_MYAUTO inside a function as if it were a global.
+
+* GUI: Custom autoglobals feature added to the Miscellaneous project settings
+  tab.
+
+* Displaying license properties with make_license (--decode-license) or
+  via the Encoder GUI now displays string properties delimited by quotes and
+  correctly displays integer properties.
+
+* GUI: Toolbar button added to display license file creation settings and 
+  minor cosmetic changes.
+
+
+Version 6.5.11 - 3 January 2007
+-------------------------------
+
+This release has numerous changes, that include the purely cosmetic, a few
+bug fixes, and both some minor and major functional enhancements for usability.
+
+These include:
+
+* GUI: Decoding of server data files via drag/drop now supports recognising
+  and processing of gzip compressed files.
+
+* GUI: Source files page and project tree enhanced. Convenience buttons added
+  for changing file/directory rules in addition to the existing right click
+  popup menu.
+  Additional visual cues to indicate project file and directory states. 
+  Popup menu options enhanced.
+
+* GUI: Double clicking or selecting "Open" on an item in the source files
+  tree now displays the usual Windows "Open with" dialog if no program
+  association is known.
+
+* GUI: "Open with..." dialog added to project tree popup menu.
+
+* GUI: The expand / collapse state of the source files tree in the Project
+  Settings is now maintained between closing and reopening the Settings
+  dialog.
+  
+* GUI: The Project Wizard has been updated.
+
+* GUI: Double clicking on errors in the popup errors window now opens the
+  associated source file or displays an "Open with..." dialog.
+
+* GUI: Improvements and corrections to the Windows GUI documentation.
+
+* GUI: Improve handling when bundling Loaders and merging to an existing
+  target.
+
+* GUI: The default encoding extensions on new projects are now .php, .php4,
+  .php5 and .inc
+
+* GUI: The default ignore pattern of .* is removed for new projects.
+
+* GUI: Although dot files were processed correctly in previous versions, they
+  may not always have shown in the source files tree. This anomoly is
+  corrected.
+
+* PHP 5 Encoder: Support is now added for a couple of PHP 5.1+ specific
+  features that were not available in the PHP 5.0 language specification.
+  In keeping with our commitment to support PHP 5.0 and not just 5.1+,
+  encoded files using 5.1+ specific features can also run on a PHP 5.0 system.
+ 
+* PHP 5 Encoder: Support added for $this[] when used by ArrayObject instances.
+ 
+* PHP 4 & 5 Encoder: Non-PHP source files that are already encrypted are now
+  copied instead of being encrypted again.
+
+* PHP 4 & 5 Encoder: Enhancements to handle cases where the encoding target
+  exists and is not removed prior to encoding (e.g. if --merge is used), and
+  where some existing target files or directories are read only.
+
+* PHP 4 & 5 Encoder: Discrepancies between how parse errors are reported with
+  the PHP 4 and PHP 5 Encoder are fixed.
+  
+* PHP 4 & 5 Encoder: Syntax checking now skips files that were ignored with
+  --ignore.
+
+* PHP 4 & 5 Encoder: Source files explicitly specified on the command line
+  will now be ignored if they match a --ignore pattern, and not only if the
+  source item was a directory.
+
+
+
+Version 6.5.10 - 15 November 2006
+---------------------------------
+
+* Support for creating wildcard server name restrictions (Pro and Cerberus) 
+  with the Encoder and make_license program. 
+  NOTE: This requires Loader 3.1.23 or above to process the wildcards.
+
+* Enhancements to --help handling on Unix.
+
+* Fix to problem that might cause non-PHP based shell scripts to be encoded.
+
+* Shell scripts already encoded are now copied and not re-encoded.
+
+* Fix for static initialisers with embedded NULL character.
+
+* Other fixes, enhancements and refinements to product and documentation.
+
+
+Version 6.5.9 - 26 May 2006
+---------------------------
+
+* Fix for PHP 5 compiler when a class or function was declared inside a 
+  case statement.
+
+Version 6.5.8 - 29 March 2006
+-----------------------------
+
+* Updated Loaders bundled with Windows download - improved memory usage.
+
+Version 6.5.7 - 15 March 2006
+-----------------------------
+
+* GUI occasionally reported certain Encoder project files as corrupt.
+* Fixed Windows Encoder issue when the source folder was just a drive 
+  letter (e.g. 'C:\').
+* Fixed issue with GUI related to pattern matching excluded/copied files 
+  in the top level of the source folder.
+* Fixed issue with GUI which occured occasionally when files were added 
+  into a directory which contained files marked to be ignored.
+
+Version 6.5.6 - 20 February 2006
+--------------------------------
+
+* Fix to bundled Loaders.
+
+Version 6.5.5 - 16 February 2006
+--------------------------------
+
+* Fix to make_license program if * is passed as argument to the 
+  --select-adapters option.
+
+Version 6.5.4 - 9 February 2006
+-------------------------------
+
+* Release with latest Loaders
+* Fix to packaging of PHP 5.1 Loader
+
+
+Version 6.5.3 - 31 January 2006
+-------------------------------
+
+* GUI: minor internal change.
+
+Version 6.5.2 - 24 January 2006
+-------------------------------
+
+* make_license program: MAC addresses can now be specified in the format 
+  {AA:BB:CC:DD:EE:FF} or {AA-BB-CC-DD-EE-FF}.
+* Windows: commandline Encoder gave an error if it was invoked with 
+  a commandline not terminating in '.exe'.
+* GUI: if location of project target folder does not exist it will be 
+  created if confirmed by the user.
+* GUI: source tree files can now have their state reset by using the 
+  context menu.
+* GUI: fix related to Include/Exclude in source tree.
+* GUI: fixed resize issue with application dialogs.
+
+
+Version 6.5.1 - 20 January 2006
+-------------------------------
+
+* If a file set to be encoded has already been encoded the Encoder will now
+  copy the file to the target and display a warning.
+* GUI: Added Open to project tree context menu for root folder, files, 
+  multiple selections.
+* GUI: New context menu items for project tree folders: 'Set contents to
+  be encoded', and 'Set contents to be encrypted' (overrule file extension
+  patterns).
+* GUI: Fixed bug where some files were set to be encoded when they did not
+  match any pattern.
+* GUI: Changed 'Apply default patterns' to 'Reset Encoder actions'. When 
+  applied, any files not matching a pattern are now set to be copied.
+* GUI: Optimised the settings dialog for 1024x768 resolution displays.
+
+Version 6.5.0 - 16 January 2006
+-------------------------------
+
+Version 6.5 of the ionCube PHP Encoder introduces powerful new security
+and usability features. Please note that due to these changes Loaders with
+version 3.1 or greater are required.
+
+* Encryption of arbitrary files
+
+The Encoder now has the ability to encrypt any file. This feature may be used,
+for example, to encrypt configuration XML files, or HTML templates for use by
+Smarty. To specify files to be encrypted the option --encrypt is used in the 
+same way as --encode is used for encoding PHP files.
+
+To read encrypted files the Loader API has been extended with the function
+
+	mixed ioncube_read_file(string path 
+			[,bool &was_encrypted [,string passphrase] ] ] )
+
+This function can read both encrypted and unencrypted files, the second 
+argument being used to return whether the file was encrypted or not. 
+Encrypted files can only be read by PHP files encoded with the same Encoder 
+installation. In other words encrypted files are protected from viewing by
+other ionCube PHP Encoder customers.
+
+Encrypted files can also be written by the Loader by using the function
+
+	long ioncube_write_file(string path, string content 
+			[,bool encrypt [,string passphrase] ] )
+
+
+* New obfuscation feature
+
+Compiled PHP bytecode contains certain information such as function names 
+which are used by PHP's execution engine. To prevent these strings from 
+appearing in encoded files version 6.5 has a new obfuscation layer. The 
+new option --obfuscate can take arguments 'functions', 'locals', 'linenos' to
+obfuscate the names of functions, local variables, and line numbers
+respectively in the compiled bytecode. Options '--obfuscate all' and 
+'--obfuscate none' can also be used.
+
+While it is desirable to obfuscate an application, it is sometimes necessary
+to prevent certain function names from being obfuscated. For example functions 
+external to the application called by the application should not be
+obfuscated. 
+
+Similarly application functions called by external scripts should not be 
+obfuscated. To specify these exceptions a text file should be created with 
+the name of each function occurring one per line, and the option 
+'--obfuscation-exclusion-file' should be used to pass the name of the file to 
+the Encoder. It is not necessary to add the names of built-in PHP functions 
+to this file.
+
+
+* Post-encoding step (Windows GUI)
+
+It is now possible to execute a command after the Encoder has finished encoding
+a project. This option supports environment variable subtitutions, so 
+the following command will open the target folder after encoding is complete:
+
+	C:\WINDOWS\explorer "{TARGET_DIR}"
+
+
+* Updated Loaders
+
+In order to execute files created with the new Encoder it is necessary to 
+install the latest version of the ionCube PHP Loader (at least version 3.1.5).
+The latest version of the Loader is always available from:
+	
+		http://www.ioncube.com/loaders.php
+
+
+* Upgrade Notes (Linux/FreeBSD/OS X)
+
+The following notes apply to those users upgrading an Encoder installation
+from a previous version.
+
+After unpacking the archive it may be necessary to generate a new license 
+request. After the request has been processed new license data can be 
+downloaded from your account area. 
+
+It may be necessary for the user of the Encoder to have write permissions to
+the directory containing the Encoder the first time the Encoder is run. 
+The Encoder will then generate a lock file in that directory. After the first 
+run of the Encoder the permissions on the folder can be restored to their 
+previous state.
+
+
+* File encryption added. Any file can be encrypted by the Encoder and then
+  read with the Loader API.
+* Obfuscation of function names, local variables, and line numbers 
+  in bytecode stream.
+* Increased internal security of encoded files and Loader.
+* Increased security of licenses generated with the make_license program.
+* GUI: Added 8 built-in environment variables TARGET_DIR, SOURCE_DIR, ...
+* GUI: Post-encoding step with environment variables substitution 
+  (e.g. C:\WINDOWS\explorer {TARGET_DIR})
+* GUI: Double-clicking on a file in the source tree opens file with Explorer.
+* GUI: Context menu option added to open a file's source directory in Explorer.
+* MAC addresses can now be specified in the format {AA:BB:CC:DD:EE:FF} 
+  or {AA-BB-CC-DD-EE-FF}.
+* Loader API: ioncube_loader_iversion() added to retrieve Loader version and
+  revision as an integer.
+* Loader API: ioncube_read_file() added to read an encrypted or unencryupted
+  file.
+* Loader API: ioncube_write_file() added to write an encrypted or unencryupted
+  file.
+* Support for <% %> ASP tags has been deprecated and removed from the 
+  Encoder GUI and documentation. It is still recognised by the Encoder
+  command line for back compatibility.
+* BUG FIX: Shell scripts with whitespace between #! and the PHP executable
+  path were not handled correctly.
+* BUG FIX: Fixed issue with custom prompts (Special Edition GUI).
+
+
+
+Version 6.0.18 - 8 December 2005
+-------------------------------
+
+* Fixed Encoder license problem when multiple instances of Encoder
+  were run simultaneously.
+
+Version 6.0.17 - 8 December 2005
+-------------------------------
+
+* Fixed issue with licensing of Encoder.
+
+Version 6.0.16 - 27 November 2005
+--------------------------------
+
+* Fixed issue with exceptions (PHP 5 Encoder).
+
+Version 6.0.15 - 22 November 2005
+--------------------------------
+
+* Try/catch support bug fixed (PHP 5 Encoder).
+
+Version 6.0.14 - 27 October 2005
+--------------------------------
+
+* Improved handling of PHP language errors when encoding files.
+
+Version 6.0.13 - 29 September 2005
+----------------------------------
+
+* Fix when recognising that a file is a shellscript PHP file.
+
+Version 6.0.12 - 7 September 2005
+---------------------------------
+
+* Special Edition GUI: blank line now maintained at end of Server Restrictions Grid
+  on dynamic fields tab.
+
+
+Version 6.0.11 - 5 September 2005
+---------------------------------
+
+* Fixed bug related to Expire On field on Windows GUI License Settings dialog
+* Fixed bug with Windows GUI License Properties - it is no longer necessary to press 
+  return after entering a property value before clicking Generate License.
+
+Version 6.0.10 - 1 September 2005
+---------------------------------
+
+* Minor bugfix with revoke file naming.
+
+Version 6.0.9 - 30 August 2005
+------------------------------
+
+* Display error if an encoded file is specified as the source when
+  encoding.
+* Windows GUI: warning dialog if automatic Loader license validation is 
+  disabled.
+
+Version 6.0 - Version 6.0.8 - 23 August 2005
+--------------------------------------------
+
+* Added feature to decode generated licenses.
+* Installing IPF evaluation is now optional.
+* Resolved time-related problem related to licensing the Encoder on Windows.
+* Fixed problem with make_license when --select-server-adapter was used but 
+  the server interface was the loopback.
+* Fixed problem with the 'strict language usage' flag on Windows.
+* No longer allow an empty license passphrase in the GUI.
+* Include 4.4 Loader with Encoder installation.
+* Fix when the Linux Encoder was invoked using the PATH environment variable.
+
+Version 6.0 - August 2005
+-------------------------
+
+* License files: new 'make_license' program, option for encoded files 
+  to require a license (Pro, Cerberus, bundled with PHP 5 Encoder)
+* Error callback file: specify a file and function that gets triggered 
+  if the Loader reports an error.
+* --update-target: only process files which have modified time after
+  the modified time of the target.
+* Support for encoding PHP shell scripts.
+* Encoder licenses can now be revoked with --revoke-license,
+  allowing an Encoder installation to be moved to a new machine
+* If the Loader causes the script to exit, the exit code is the sum of
+  200 plus the ID of the Loader Event (see User Guide)
+* Bugfix: transparency of icons in Windows icon extension.
+* Windows GUI: Icon extension can recognise PHP shell scripts and 
+  encoded files with no preamble.
+* --include-if: extended to prevent encoded files from including 
+  non-encoded files. Now exposed in Windows GUI.
+* --disable-auto-prepend-apppend: prevent execution if the php.ini
+  settings auto_prepend_file or auto_append_file are used.
+* Updated dynamic fields interface, added license dynamic fields
+  (Special Edition Windows GUI only).
+* Constants defined in the Loader for Loader Events.
+* Loader API enhanced.
+* When encoding a single file, the Encoder exits with code 7 
+  if an error occurs instead of 0.
+* Bugfix: PHP 5 Encoder bug when overriding properties 
+  in derived classes.
+* Bugfix: bug related to --allow-encoding-into-source on Windows.
+* Detect whether target file is the same as the source file on Windows.
+* Bugfix: Removing .php, .php4, .php3 default patterns from extensions list 
+  with Windows Encoder GUI now works as expected.
+* Improved 'parse error' messages with Windows Encoder GUI when used with
+  the PHP 5 Encoder.
+* Files starting with '.' (for example .htaccess) now appear in the GUI source tree
+
+Version 5.0.2 - May 2005
+------------------------
+
+* Bugfix: Exceptions were not handled correctly by the PHP 5 Encoder.
+* Bugfix: PHP 4 Encoder crashed if 'parent::myclass' was used 
+  when myclass had no parent class.

@@ -1,0 +1,63 @@
+                    ionCube PHP Standalone Encoder Changelog
+                    ----------------------------------------
+
+The main changes for this release are detailed below. Please see the
+user guide for more details.
+
+VERSION 3.1 - March 2004
+------------------------
+
+NEW FEATURES
+
+* ASCII Encoded File Format
+
+Two new options --binary and --ascii offer selection between the original
+ionCube binary encoded file format and a new ASCII encoded format. 
+
+ASCII encoding is a layer on top of the existing binary format, offers all of
+the security advantages of ionCube compiled code binary format, and none of
+the problems from users installing binary files using tools such as Windows
+FTP in ASCII mode, Dreamweaver or WinZIP.
+
+As with the ionCube binary file format, ASCII format files are also highly
+efficient, and files still retain the ionCube performance advantage over
+other systems.
+
+Release 2.4 of the Loader is required to process ASCII format encoded files.
+
+
+* Localised program messages for some languages
+
+Localised program support for German, Italian, Polish and Japanese is 
+officially launched in 3.1
+
+
+* Support for 'untrusted' extensions
+
+Encoder users can now specify whether they wish their encoded files to 
+run on systems that have untrusted extensions installed such as mmcache.
+ionCube security features maximise code protection even when OpenSource 
+extensions are installed, however users can now choose whether their code 
+is permissioned to run or not. (previously code would not run when OpenSource
+extensions are installed)
+
+option '--strict-php' enables warnings if deprecated PHP language features
+are used, and generating warnings if call time reference passing is used.
+
+A new Loader event for customising the message when a file is not permissioned
+for use with untrusted extensions is also introduced.
+
+
+MAIN ENHANCEMENTS
+
+* The Encoder now defaults to looking in a file licdata.txt for license
+information.
+
+
+PROGRAM CHANGES
+
+* The --erase-target option has been renamed as --replace-target. 
+--erase-target is retained for backwards compatibility.
+
+
+Copyright (c) 2004 ionCube Ltd.                       Last revised 1-Mar-2004

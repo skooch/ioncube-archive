@@ -1,0 +1,123 @@
+                    ionCube PHP Standalone Encoder Changelog
+                    ----------------------------------------
+
+The main changes between Encoder versions are detailed below. Please see the
+user guide and quick reference guide for more details.
+
+VERSION 3.0 - July 2003
+-----------------------
+
+NEW FEATURES
+
+* Customised Loader Events
+
+The messages for Loader events may now be customised as required on a 
+per-encoded file basis. This permits the use of non-English messages and
+those that are specific to the application or vendor. Customisable event
+messages include those for corrupt files, expired files, and non-permissioned
+files.
+
+
+* Multiple IP restrictions
+
+IP restrictions may now be specified for multiple IP addresses, multiple IP
+address ranges, and multiple IP address subnets.
+
+
+* Server Name Restrictions
+
+Files can now also be restricted based on server names, and combined with IP
+address restrictions. 
+
+
+* Ethernet Address (MAC) Based Restrictions ('Cerberus' Encoder)
+
+An upgrade to the standard Encoder now offers Ethernet address based
+restrictions for encoded files. This mechanism locks files to the
+hardware address of Ethernet network cards, and offers stronger control
+in restricting where files can be used.
+
+
+* File Properties
+
+Files may have numeric, string and array properties associated with them.
+These can be read via an API call in the Loader, and files may be
+set to interact only with files that have specific properties and values.
+
+
+* Support for Loader API
+
+The Loader accompanying this release introduces a secure API for use by
+encoded files. The API uses a unique and proprietary alternative to the
+usual function call mechanism provided by PHP, and is transparent to the
+PHP script developer. Most Loader API functions return FALSE unless called
+by encoded files.
+
+
+* New optimisation settings
+
+A new option '--optimise <level>' optimises encoded files more at the expense 
+of additional encoding time. '<level>' can currently be 'more' or 'max'. 
+--optimize is available as an alias for --optimise.
+
+
+ENHANCEMENTS
+
+* File Format
+
+The latest generation of encoded file format yields various benefits,
+including improved performance and smaller files. The Loaders for this release
+still support all previous file formats.
+
+
+* Encoding Performance
+
+Encoding performance is enhanced over previous releases for all performance
+settings.
+
+
+* Filename/Directory Pattern Matching
+
+The processing of filename and directory patterns for the --include, --exclude,
+--keep and --ignore options has been improved.
+
+
+* Enhanced Access Control
+
+Support for multiple IP's and server name restrictions greatly extends the ways
+that files can be locked to specific configurations.
+
+e.g.
+
+Locking to single IP
+
+--allowed-server 192.168.1.4
+
+Locking to single server name
+
+--allowed-server www.simplesite.com
+
+Locking to two domains on a cluster
+
+--allowed-server www.bigsite.com,www.bigsite.de@212.10.50.12-19
+
+ 
+FEATURE CHANGES FROM PREVIOUS RELEASES
+
+The default file patterns for matching PHP files are now:
+'*.php' '*.php3' '*.php4' '*.phtml'
+
+The high performance encoding of the '--fastest' switch from previous releases
+is now the default. It produces highly efficient files in the shortest
+encoding time. '--optimise' can be used instead to increase the processing
+time spent on optimisations although this is not necessary.
+
+'--faster' and '--fastest' from previous releases are now deprecated.
+
+The '--compress' option is now always enabled.
+
+The '--allow-call-time-pass-reference' is now enabled by default. The new
+option '--strict-php' enables warnings if deprecated PHP language features
+are used, and generating warnings if call time reference passing is used.
+
+

@@ -1,0 +1,1259 @@
+                      The ionCube Encoder - Version 3.0
+                      ---------------------------------
+
+
+                           I N T R O D U C T I O N
+                           -----------------------
+
+The ionCube standalone PHP Encoder offers a comprehensive encoding
+solution, delivering the maximum security and performance to encode 
+precompiled and optimised scripts with the use of compiled code encoding.
+
+Coupled with the ionCube Loader, users of encoded scripts can run them 
+either by installing the Loader as a server extension in the php.ini 
+PHP configuration file, or on many platforms, have the Loader installed
+when needed at run-time by the encoded scripts themselves.
+Run-time loading requires neither a server reconfiguration nor a server
+restart, and is a unique feature of the ionCube products.
+
+The ionCube Loader can also be installed with Zend Optimiser or the
+ionCube PHP Accelerator, and coupled with the server install or run-time
+loading, ensures that scripts can be run on a wide range of platform
+configurations.
+
+Encoded files are also platform independent, and will run on any platform
+for which there is a loader available, and independent of the platform
+used for encoding.
+
+
+                         E N C O D E R   D E S I G N
+                         ---------------------------
+
+This version of the Standalone Encoder is driven by a command line interface,
+and is designed particularly for easy integration into project build, test
+and release environments, and also for just-in-time (JIT) encoding. 
+
+If your projects are managed using make, a new target called 'encode' might
+be added to your makefiles. Alternatively you could use a shell script, the
+built-in projects feature of the Encoder, or other mechanisms to trigger the
+Encoder when needed. There are many possibilities.
+
+The high performance of the Encoder makes Just-In-Time (JIT) encoding 
+practical, giving the opportunity to deliver customised versions of
+your software to individual users, and if using the enhanced Encoder,
+encoding scripts to expire after a time period for trial-ware. 
+
+
+FEATURE SUMMARY
+---------------
+
+The Encoder may be used in three ways.
+
+* To encode a single file.
+* To encode and copy a project of multiple directories and files of any type.
+* To syntax check a single file or multiple directories.
+
+
+Features of the Basic Encoder include:
+
+* Easy selection of the files and directories to encode, leave unencoded, or
+  ignore entirely.
+
+* Handling of short open tags (<? ?>) and asp tags (<% %>).
+
+* Full customisation of the runtime Loader install feature.
+
+* Adding user defined text in encoded files, such as copyright information.
+
+* Customisation of Loader messages.
+
+* Support for secure Loader API.
+
+* Associating properties with files.
+
+* Requiring properties to be defined by an including file before a file can be
+  included.
+
+* Optimisation control.
+
+* Including or excluding of files and directories from being encoded based
+  on name and/or patterns. Multiple include/exclude options may be used as
+  required.
+
+* Optional ignoring of files and directories based on name and/or patterns
+  when encoding directories.
+
+* Projects feature to encode projects with pre-configured options
+
+* Using hard links rather than file copying for maximum performance when
+  adding non-encoded files to the target directory.
+
+* Disabling the preserving of file times, permissions and ownership.
+
+* Only adding encoded files to a target directory.
+
+* Erasing, renaming, or merging with a target directory if it already exists.
+
+
+Enhanced Encoder features include all Basic Encoder features, plus: 
+
+* Producing encoded files to expire on a specific date or after a time period.
+* Restricting encoded files to IP addresses and server names.
+
+
+Cerberus Encoder features include all Enhanced Encoder features, plus:
+
+* Producing files that can be restricted to Ethernet (MAC) addresses.
+
+
+                      U S I N G   T H E   E N C O D E R
+                      ---------------------------------
+
+This section describes the Encoder features in detail. All the available
+command line options are presented, grouped according to their purpose.
+
+A summary of all command line options is also given in the QUICK-REFERENCE
+guide, and in addition, the options can be displayed by running the Encoder
+with the command line option -h or --help.  The QUICK-START guide provides
+some examples for common encoding scenarios. 
+
+
+1. RUNNING THE PROGRAM
+
+The general form for running the Encoder to encode is:
+
+$ ioncube_encoder [options] source_file -o encoded_file
+
+or 
+
+$ ioncube_encoder [options] project_directory -o encoded_project
+
+or
+
+$ ioncube_encoder [options] files_and_directories --into target_directory
+
+and to syntax check:
+
+$ ioncube_encoder [options] -S files_and_directories
+
+The available options are fully explained in the following sections.
+
+
+1.1 THE LICENSE FILE
+
+The purchased Encoder requires a license file in order to run, full details 
+on licensing are given in the LICENSE-HOWTO document. The examples in 
+this guide assume that a valid license file is available and has been specified
+by setting the IONCUBE_ENCODER_LICENSE_FILE environment variable to the full
+file path of the license file.
+
+
+1.2 PASSING COMMAND LINE OPTIONS
+
+1.2.1 Long Option Names
+-----------------------
+
+Most options are of the long-format, starting with -- and having a descriptive
+name. For convenience, options can be abbreviated to the shortest string 
+that makes them unique and the Encoder will warn if there are multiple 
+choices.
+
+Long options requiring values may use the '=' character or whitespace to
+separate the option from its value.
+
+E.g. either of the following may be used:
+
+  --add-comment='Encoded by ionCube'
+  --add-comment 'Encoded by ionCube'
+
+
+1.2.2 Use Caution with Wildcard Characters
+------------------------------------------
+
+When specifying options containing wildcard characters ('*', '?' or '[]'), be
+careful to ensure that the shell may not expand these itself.
+
+A few recommended choices are:
+
+  --ignore='*.cfg'
+
+  --ignore '*.cfg'
+
+  --ignore=\*.cfg
+
+  --ignore \*.cfg
+
+
+2. USING THE ENCODER FOR SYNTAX CHECKING 
+
+As well as encoding, the Encoder can be used to just syntax check one or more
+files or directories.
+
+To syntax a single file or directory, run the Encoder as either:
+
+  ioncube_encoder -S <file or directory>...
+
+or
+
+  ioncube_encoder --syntax-check <file or directory>...
+
+When syntax checking, you can specify any number of files or directories.
+
+By default the Encoder will show only errors (see the section below on error
+reporting for more details). If --verbose is used then each file checked
+will be shown even if no errors are encountered.
+
+NOTE: The use of the options affecting the PHP language (asp tags, short open
+tags, call time references) affect syntax checking, and --include and
+--exclude (see below) determine which files are processed.
+
+HINT: Running the syntax checker with --verbose can be a quick way to see
+the effect of using the --include and --exclude options without actually
+encoding.
+
+
+3. USING THE ENCODER FOR ENCODING
+
+The Encoder can be used to encode single files and entire directory trees.
+Directory encoding replicates the entire source directory hierarchy as
+precisely as possible. This includes copying non-encoded files, replicating
+symbolic links, and preserving file and directory attributes.
+
+3.1 SPECIFYING THE SOURCE AND TARGET
+
+Encoding requires a source and a target to be specified. 
+
+3.1.1 Specifying the Source
+---------------------------
+
+The source may be either a file or a directory and requires no command
+line option. The source may be specified anywhere on the command line. 
+The following sections have examples.
+
+
+3.1.2 Specifying the Target with -o (encoding as)
+-------------------------------------------------
+
+The -o option allows you to specify what the actual name of encoding target 
+should be. It lets you say "encode the source AS this target". 
+
+Only one source file or directory tree can be specified if using -o, but a
+directory can contain as many files and subdirectories as desired.
+
+e.g.
+
+Encoding a file
+
+  ioncube_encoder hello.php -o hello-encoded.php
+
+
+Encoding a directory tree
+
+  ioncube_encoder /home/projects/test -o /home/encoded-projects/test
+
+
+3.1.3 Specifying the Target with --into (encoding into)
+-------------------------------------------------------
+
+Using --into lets you specify a target directory into which encoded files or
+directories should be written. With this option the target directory or file
+will have the same name as the source, and you can also encode multiple
+source files or distinct directories at the same time if you wish.
+
+e.g.
+
+Encode directory tree /home/projects/test as /home/encoded-projects/test
+
+  ioncube_encoder /home/projects/test --into /home/encoded-projects
+
+
+Encode projects project1 and project2 into /home/encoded-projects
+
+  ioncube_encoder /home/projects/project[12] --into /home/encoded-projects
+
+
+Encode file1.php and file2.php into /home/encoded-files
+
+  ioncube_encoder file1.php file2.php --into /home/encoded-files
+
+
+3.1.4 Encoding Single Files
+---------------------------
+
+For example, to encode the file hello_world.php as hello_world-encoded.php
+in the current directory, you could run the Encoder as: 
+
+  ioncube_encoder hello_world.php -o hello_world-encoded.php
+
+If the target file already exists then it will be overwritten. To encode
+the file with the same name and into a directory called encoded, you would
+run:
+
+  ioncube_encoder hello_world.php -o encoded/hello_world.php
+
+
+3.1.5 Encoding Directories
+--------------------------
+
+If encoding a directory hierarchy, specify the source directory and the name
+of the target directory.
+
+For example, to encode a directory of files with path /src/my-project as a
+directory /src/encoded/my-project, the Encoder could be run as:
+
+  ioncube_encoder /src/my-project -o /src/encoded/my-project
+
+When encoding a directory, by default all files are copied from the source to
+target directory and all files matching the patterns '*.php*' and '*.phtml'
+are encoded.
+
+NOTE: To safeguard against accidental error and possible loss of source files,
+the Encoder currently tries to prevent a) encoding directories that lie
+within the target tree, and b) encoding to a directory that lies within the
+source tree.
+
+
+3.2 ENCODING TO AN EXISTING DIRECTORY TARGET
+
+When encoding a directory, by default the Encoder will generate an error if
+the target directory already exists. This is because there are several possible
+actions in this case, and for safety no default action is assumed.
+
+Three options are provided to offer ways to handle this case, and if the
+target doesn't exist then the options have no effect.
+
+
+3.2.1 Erasing the Target
+------------------------
+
+An existing target can be erased before encoding by using:
+
+  --erase-target
+
+This ensures that the encoding is 'clean', and that the result contains no
+unwanted files and that all files are updated. This is the most common option
+to use when the target already exists.
+
+
+3.2.2 Merging into the Target
+-----------------------------
+
+Files from the encoding source can be merged with an existing target by using:
+
+  --merge-target
+
+This will preserve the existing target, and all files from the source will be
+created or replace any existing files in the target. Any files in the target
+that are not present in the source project will be preserved.
+
+
+3.2.3 Renaming the Target
+-------------------------
+
+The target can be preserved by being renamed by using: 
+
+  --rename-target
+
+This will rename the target directory as /src/encoded/my-project.<n> 
+Starting from 1, <n> will be the smallest number that produces a directory
+name that doesn't exist. 
+
+
+3.3 ENCODER SAFETY CHECKS
+
+By default the Encoder prevents a target directory to be within the source
+tree or for the source directory to be within the target tree.  This is to
+prevent accidental overwriting of source files or unexpected results. In some
+cases it may be desired to override the checks, and options are provided for
+this purpose.
+
+3.3.1 Allowing Encoding into the Source Tree
+--------------------------------------------
+
+To permit the target directory to be within the source tree use:
+
+  --allow-encoding-into-source
+
+Note that because the target directory is created before encoding, you should
+also tell the Encoder to ignore the target directory otherwise an empty 
+directory with the same name as the target will appear within the target.
+
+Examples:
+
+The following examples assume a directory named test containing helloworld.php
+
+Ex. 1 Encoding into source with safety check
+
+$ ioncube_encoder test -o test/encoded 
+Error: Can't encode to a directory within the source tree
+
+The Encoder safety check prevents encoding to the directory named encoded
+because that is within the original source tree.
+
+Ex. 2 Disable safety check
+
+$ ioncube_encoder test -o test/encoded --allow-encoding-into-source
+$ ls -R test
+test:
+encoded/  helloworld.php
+
+test/encoded:
+encoded/  helloworld.php
+
+test/encoded/encoded:
+
+Notice the unwanted encoded/encoded directory in the target.
+
+Ex. 3 Disable safety check and ignore the target as a source directory
+
+$ ioncube_encoder test -o test/encoded --allow-encoding-into-source --ignore encoded/
+$ ls -R test
+test:
+encoded/  helloworld.php
+
+test/encoded:
+helloworld.php
+
+NOTE: A preferable directory layout would be to have source files in their
+own subdirectory within the test directory, e.g. test/source/helloworld.php,
+and to encode to test/encoded. The Encoder could then be used without
+overriding safety checks.
+
+For example:
+
+$ ioncube_encoder test/source -o test/encoded
+
+would be safe and work without error.
+
+
+3.3.2 The Source Directory within the Target Tree
+-------------------------------------------------
+
+The Encoder prevents encoding a source directory that is part of the target
+tree, e.g.
+
+$ ioncube_encoder test/source -o test --merge
+Error: Can't encode a directory that's within the target directory
+
+The --merge option is required here because the target directory exists, but
+the Encoder prevents encoding because the source directory is within the target
+and overwriting or polluting the source tree could happen. This safety check
+cannot be disabled.
+
+
+3.4 EXCLUDING FILES FROM BEING ENCODED OR INCLUDED IN TARGET
+
+3.4.1 Excluding Files From Being Encoded
+----------------------------------------
+
+  --include=<path>
+  --exclude=<path>
+
+Files and directories may be excluded from being encoded with --exclude.  
+The option --include may be used to reverse the effect of --exclude.
+These options can be used and combined to specify precisely which files and
+directories are to be encoded.
+
+Paths may contain the wildcard character '*' to match any set of characters,
+a '?' to match any single character, and '[]' to match any character from a set
+of characters.
+
+NOTE: Append a '/' to the <path> to make <path> match a directory rather 
+than a file.
+
+Examples:
+
+To encode files ending in '.inc' and '.phpi', in addition to the default
+patterns, use:
+
+  --include='*.inc' --include='*.phpi'
+
+
+To not encode files in a directory called 'config' (and subdirectories), use:
+
+  --exclude=config/
+
+
+To not encode files in a directory called 'config', but leave subdirectories 
+unaffected, use:
+
+  --exclude='config/*'
+
+The '*' matches all files but not directories.
+
+
+To exclude all directories in a directory called 'config', but to leave the
+files in 'config' unaffected (i.e. still encoded), use:
+
+  --exclude='config/*/'
+
+The '*' matches directories because it's followed by a '/' (see NOTE: above)
+
+
+To not encode config files except in config/private/, use:
+
+  --exclude=config/ --include=config/private/
+
+As above, but have 'help.php' in the '/config/private' left unencoded, use:
+
+  --exclude=config/ --include=config/private/ --exclude=config/private/help.php
+
+
+3.4.2 Ignoring Files From Source Directory
+------------------------------------------
+
+  --keep=<path>
+  --ignore=<path>
+
+Files and directories may be ignored entirely and not included in the target
+by using --ignore. The option --keep may be used to reverse the effect
+of --ignore.
+
+The format of <path> is as for --exclude/--include, and may also contain wildcards.
+
+Examples:
+
+To ignore RCS directories and emacs backup files use:
+
+  --ignore=RCS/ --ignore='*~'
+
+
+3.5 TIME LIMITING FILES (feature unavailable in the basic product)
+
+Encoded files can be time limited by specifying either an expiry date or time
+period.
+
+3.5.1 Expiry on an Absolute Date
+--------------------------------
+
+To specify an absolute date, use:
+
+  --expire-on=<yyyy-mm-dd>
+
+For example:
+
+  --expire-on=2002-10-01
+
+would expire files from 2002-10-01
+
+
+3.5.2 Expiry After a Time Period
+--------------------------------
+
+To specify a period in seconds, minutes, hours or days, use:
+
+  --expire-in=<period>
+
+where period is a number followed by one of the letters 's', 'm', 'h', or 'd'
+to denote a period in seconds, minutes, hours or days.
+
+For example:
+
+  --expire-in=7d
+
+would expire files in 7 days, and:
+
+  --expire-in=8h
+
+would expire files in 8 hours
+
+The expiry period is based relative to the time that files were encoded.
+
+
+3.6 RESTRICTING SERVER ACCESS (feature unavailable in the basic product)
+
+Encoded files can be restricted to load only on machines with specific
+IP addresses and/or server names. The server name is an attribute that is
+set by the web server. In the Cerberus edition of Encoder files can also
+be restricted by MAC (Ethernet) address.
+
+The option and complete syntax for restricting access to a server is:
+
+  --allowed-server [<server names>][@<ip addresses>][{<MAC address>}]
+
+Each server specification can contain as many server names and ip addresses as 
+desired, or none, and one MAC address if using the Cerberus edition Encoder.
+The [ ] means that each item is optional.
+
+The --allowed-server option may be used more than once to specify multiple
+servers on which files may run. 
+
+The syntax for server names, ip addresses and MAC address are given below.
+
+
+3.6.1 Server Names
+------------------
+
+To restrict to one or more sever names specify the names separated by commas. 
+
+e.g.
+
+  www.foo.com
+  www.foo.com,www.bar.com
+
+
+3.6.2 IP Addresses
+------------------
+
+IP addresses may be specified as a single address, a range of addresses
+or a subnet. Multiple addresses may be specified separated by commas.
+
+* Single IP Address
+
+e.g.
+
+  192.168.1.4
+
+would match address 192.168.1.4
+
+
+* IP Range
+
+An IP range may be specified as two addresses separated by a '-'. The second
+address may be a partial address. 
+
+Examples:
+
+  192.168.1.5-192.168.1.7
+
+specifies addresses 192.168.1.5 to 192.168.1.7
+
+  192.168.1.5-7
+
+also specifies 192.168.1.5 to 192.168.1.7
+
+  192.168.1.1-2.255
+
+specifies 192.168.1.1 to 192.168.2.255
+
+
+* IP Subnet
+
+All IP's in a subnet may be specified either by giving only the part of the IP
+address that must match or by specifying the number of most significant bits
+that must match in the IP address.
+
+Examples:
+
+  192.168.1
+
+would match addresses 192.168.1.0 to 192.168.1.255
+ 
+  192.168.1.255/28
+
+would match addresses where the most significant 28 bits of the IP address
+matched the most significant 28 bits of 192.168.1.255
+
+
+3.6.3 MAC Address (Cerberus edition only)
+-----------------------------------------
+
+If using the Cerberus edition Encoder, one MAC address may also be given for
+each server specification by specifying the 6 bytes of the MAC address in 
+hexadecimal notation. 
+
+e.g.
+
+  {00:01:02:06:DA:5B}
+
+to specify the MAC 00:01:02:06:DA:5B
+
+
+3.6.4 Complete Examples
+-----------------------
+
+Some complete examples of possible server specifications follow.
+
+* Single IP
+
+  --allowed-server 192.168.1.8 
+
+* IP range
+
+  --allowed-server 192.168.1.5-9 
+
+* Server name
+
+  --allowed-server www.foo.com 
+
+* Server name on an IP address
+
+  --allowed-server www.foo.com@192.168.1.2
+
+* Server name on a MAC address
+
+  --allowed-server www.foo.com{00:02:08:02:e0:c8}
+
+* Multiple IP's
+
+  --allowed-server 192.168.1.4,192.168.1.9
+
+* Either of two domains on either of two IP's
+
+  --allowed-server www.foo.com,www.bar.com@192.168.1.1,192,168.1.3
+
+* Server name and IP on a specific MAC address
+
+  --allowed-server www.foo.com@192.168.1.1{00:02:08:02:e0:c8}
+
+
+3.7 TARGET FILE COPYING
+
+3.7.1 Copying with Hard Links
+-----------------------------
+
+By default, the Encoder copies non-encoded files to the target directory
+by creating a new file and copying the contents. 
+
+As an alternative, files being copied from the same filesystem as the target
+can be added to target using hardlinks with the option:
+
+  --use-hard-links
+
+This is faster than copying the contents, but note that changes to files 
+in the source directory will also affect files in the target directory as
+the target refers to the same file.
+
+
+3.7.2 Preventing Copying of non-Encoded Files
+---------------------------------------------
+
+You can skip copying non-encoded files entirely by using:
+
+  --only-include-encoded-files
+
+
+3.8 FILE ATTRIBUTES
+
+3.8.1 File Permissions
+----------------------
+
+To prevent the read/write/execute permissions of source files and directories
+from being applied to targets, use:
+
+  --without-keeping-file-perms
+
+
+3.8.2 File Times
+----------------
+
+To prevent the file access and modification times of source files and
+directories from being applied to targets, use:
+
+  --without-keeping-file-times
+
+
+3.8.3 File Ownership
+--------------------
+
+When running as root, the Encoder will also the copy file ownership from source
+files and directories to targets. This can be prevented by using:
+
+  --without-keeping-file-owner
+
+To apply a different user and group to targets, use:
+
+  --apply-file-user=<user id/name>
+  --apply-file-group=<group id/name>
+
+The id/name may be either a numeric id or a name.
+
+
+3.9 LANGUAGE OPTIONS
+
+3.9.1 Short Open Tags
+---------------------
+
+PHP code is often delimited by short open tags. The short open tag is <?, and 
+can be used instead of the recommended <?php. As the use of <? is so common,
+this is recognised by default, however the following option can prevent <?
+from being recognised as the beginning of PHP code:
+
+  --no-short-open-tags
+
+
+3.9.2 ASP Tags
+--------------
+
+Some scripts make use of the asp tag syntax <% to being PHP code. Support for
+this is disabled by default, but can be enabled by using:
+
+  --allow-asp-tags
+
+
+3.9.3 Strict PHP Usage
+----------------------
+
+Some features of the PHP language are now discouraged, and may even disappear
+from future language versions. By default the Encoder permits use of such
+features, however the option:
+
+  --strict-php
+
+enables warnings if these features are used. Currently the --strict-php
+option warns if variables are passed by reference at the point of a function
+call. Recommended practice is for variables to be declared as being accepted
+by reference in the function definition, but always passed without a 
+reference attribute.
+
+
+3.10 ENCODING AND RUN-TIME PERFORMANCE
+
+By default the Encoder uses an encoding format that encodes with the best
+Encoder performance and good run-time performance. Better run-time
+performance of encoded files may be obtained by increasing the optimisation
+levels. 
+
+The options:
+
+  --optimise more
+  --optimise max
+
+increase optimisation to either an intermediate and a maximum level. 
+
+Note: The option --optimize may be used as an alias for --optimise.
+
+
+3.11 FILE HEADER FORMAT AND RUNTIME LOADING
+
+Encoded files have a default PHP header that handles run-time loading of the 
+loader if it isn't already installed, and that produces an error message if
+no loader could be installed. Whilst this is a good default, a customised
+header may be more suitable in some cases. 
+
+Full customisation of both the header code (the 'preamble') is possible, and
+the header may also include user defined text that appears as comments.
+This permits text such as copyright messages, product version, contact
+details etc. to be specified.  The header is protected from tampering and
+verified by an embedded digital signature. Any modifications to the encoded
+file header after encoding will render it useless.
+
+3.11.1 Header Code (the file preamble)
+--------------------------------------
+
+To generate no code for run-time loader support, use:
+
+  --without-runtime-loader-support
+
+
+To have no header code for installing the loader or reporting any errors 
+added to encoded files, use:
+
+  --without-loader-check
+
+
+To customise the message emitted if no loader can be installed, use:
+
+  --message-if-no-loader=<text>
+
+<text> should be a valid PHP expression that gets passed to the PHP die()
+function, and so should include quote marks if it's a string.
+
+
+To customise the action when no loader can be installed, and replacing the
+default of calling the die() function, use:
+
+  --action-if-no-loader=<php code>
+
+
+To replace the default runtime path to the loader of
+'ioncube/ioncube_loader.so', use:
+
+  --loader-path=<path>
+
+
+To set the entire preamble from the contents of a file use:
+
+  --preamble-file=<file>
+
+
+3.11.2 Header Comments
+----------------------
+
+To add text to appear as single line comments in the PHP header, and after
+any file preamble, use:
+
+  --add-comment=<text>
+
+As many add-comment options can be used as required.
+
+
+To add comments from a file, use:
+
+  --add-comments=<file>
+
+
+3.12 CUSTOMISING LOADER BEHAVIOUR
+---------------------------------
+
+Messages generated by the Loader from run-time events can be customised at
+encoding time to those of your own choice.
+
+For each web request, Loader messages that have been customised by an encoded
+file will take effect for all subsequently included files unless a later
+included file provides a different message. It's therefore not necessary to
+customise Loader messages in supporting library files.
+
+To customise an event message use:
+
+  --loader-event '<event>=<message>'
+
+<event> should be the event type to customise and <message> is the text
+to associate with the event. <event> and may be one of:
+
+corrupt-file - triggered when a corrupted file is detected
+expired-file - triggered when a file has reached its expiry time
+no-permissions - triggered when a file with an ip restriction is not met
+clock-skew - triggered when a file is used where the system clock is set more
+             than 24 hours prior to the file being encoded
+
+For example:
+
+  --loader-event 'expired-file=This software has expired.'
+
+will cause
+
+  This software has expired.
+
+to be output if this file or any files included after this file have expired.
+
+Custom messages may also contain display formats. Each format gets replaced
+with specific text as follows.
+
+%f - replaced by the path of the file generating the event
+
+%i - server IP address ('no-permissions' event only)
+
+%h - server name ('no-permissions' event only)
+
+e.g. 
+
+  --loader-event 'expire-file=The file %f has expired'
+
+
+
+3.13 FILE PROPERTIES
+
+Encoded files may have properties associated with them and that may be read
+by an API in the Loader. Files may also be restricted to only be includable
+if the file attempting to include them has specific properties defined and
+with particular values. All properties have Private scope with the current
+version of the Encoder, and can only be read by the encoded file itself.
+
+3.13.1 Setting Properties
+-------------------------
+
+To define one or more properties, use:
+
+  --properties 'name[=value][, ...]'
+  --property 'name[=value][, ...]'
+
+Name is the name of the property to be defined, and value is the 
+property value. Multiple values may be separated by commas.
+
+Values can be numeric, a string (optionally delimited by ' or "), or an array,
+delimited by { }. Array elements may optionally have keys.
+
+Examples:
+
+* Define a property 'version' with integer value 5
+
+  --property version=5
+
+* Define a property 'version' with string value 2.0
+
+  --property 'version="2.0"'
+
+or
+
+  --property "version='2.0'"
+
+* Define several properties
+
+  --properties 'version=1,company="Foo Technologies"'
+
+* Define an array
+
+  --property 'features={options=>{"save","load","print"},licensed_to=>"foo@bar.com"}'
+
+
+3.13.2 Restricting Include Access by Property Value
+---------------------------------------------------
+
+Files may be restricted to be only includable if the including file has
+specific properties set and with particular values.
+
+To restrict access, use:
+
+  --include-if-property 'name=[value][, ...]'
+
+Property name and value are as defined for the --properties option.
+
+This option may be used more than once to define multiple sets of required
+properties.
+
+Examples:
+
+* Include files if 'program_name' is 'my app'
+
+  --include-if-property 'program_name="my app"'
+
+* Include files if 'pname' is 'app1' or 'app2'
+
+  --include-if-property 'pname="app1"' --include-if-property 'pname="app2"'
+
+Note that files having a property restriction will not be Loaded if accessed
+directly, and so any files to be accessed directly must not have
+a property restriction in effect. Therefore, a project may need to be encoded
+in two parts - once to encode files that should only be included by other
+encoded files, and once to encode the top-level scripts. The --merge option
+of the Encoder may be useful in this case to allow encoded files from the
+second run of the encoder to be merged with already encoded files.
+
+Example:
+
+To encode project 'app' as 'app_encoded', and where files have a property of
+'key="somekeyvalue"' and those ending in '.inc' can only be included by files
+that have property 'key="somekeyvalue"', the following two steps could be
+followed.
+
+1) Encode all files, (.php and .inc extensions), define the "key" property
+   and restrict all files to requiring the "key" property to be set. 
+
+  ioncube_encoder app -o app_encoded --erase --include '*.inc' --include-if 'key="somekeyvalue"' --property 'key="somekeyvalue"'
+
+2) Reencode just the .php files, setting the property "key", but without
+   the include-if restriction. Merge those with the already encoded project.
+   To speed things up, only copy of the files being encoded. This replaces the
+   files ending in .php with ones that define the property "key" but that
+   don't require it to be set by any including file.
+
+  ioncube_encoder app -o app_encoded --merge --only-include-encoded-files --property 'key="somekeyvalue"'
+
+
+3.14 MISCELLANEOUS
+
+3.14.1 Program Version
+----------------------
+
+To display the program version, use:
+
+  -V
+
+or
+
+  --version
+
+
+3.14.2 Verbose Mode
+-------------------
+
+Verbose mode will output details about Encoder operations and progress. Enable
+verbose mode with:
+
+  -v
+
+or
+
+  --verbose
+
+
+3.14.3 File Verify
+------------------
+
+If runtime loading is to be used, it's necessary that files can be read and
+parsed by the PHP engine as valid PHP files. This can be checked by using:
+
+  --verify
+
+After encoding, each encoded file is then parsed, and any errors reported.
+If the file preamble has been customised then it's possible that verification
+will fail, and so this option can be used to but otherwise it should always succeed.
+
+
+3.14.4 Help
+-----------
+
+A summary of command options can be displayed with:
+
+  --help
+
+
+4. PROJECTS
+
+The Encoder supports a simple concept of projects, allowing easy
+repeat encoding of projects by specifying a file containing Encoder
+options. This functionality can also be easily achieved by wrapping
+the Encoder with a shell script, although the project file feature may
+be a preferable alternative.
+
+The project related options are:
+
+  --project-file=<file>
+
+Specify a file from which to read Encoder options. Any additional command
+line options are processed after those in the file, and add to or override
+those from the file. 
+
+  --create-project
+
+Create the project file specified with --project-file with the given command
+line options. The project file is overwritten if it already exists.
+
+  --update-project
+
+Update the project file specified with --project-file
+to contain any existing settings read from the file plus any
+additional command line options.
+
+Examples.
+
+Ex 4.1 Running the Encoder with options:
+
+  --project-file --create-project project1.cfg project1 -o /home/encoded-files/project1 --erase
+
+will perform the encoding and record the command options in the file
+project1.cfg.
+
+Ex 4.2 Running the Encoder a second time with just:
+
+  --project-file project1.cfg
+
+will repeat the encoding process with the same options used when the projects
+file was written. 
+
+Ex 4.3 Running the Encoder with:
+
+  --project-file project1.cfg --verbose
+
+will repeat the encoding but with verbose mode.
+
+Ex 4.4 Running with:
+
+  --project-file project1.cfg -o /home/encoded-files/project1-new
+
+will repeat the encoding but use a different target directory.
+
+Ex 4.5 Running with:
+
+  --project-file project1.cfg --update-project -o /home/encoded-files/project1-new
+
+will repeat the encoding, using the new target directory, and write
+the settings back to the project file. Repeating Ex 4.3 will now
+encode to project1-new as the project file had been updated.
+
+Notes:
+
+The project file is currently just a list of the command options and
+may be edited manually. All options must appear together on one line.
+
+When specifying command options in addition to naming a project file,
+some options override a project setting, e.g. using -o to override the
+output named in the project file in the examples above. However, any
+additional source files and include/exclude or ignore/keep items are
+added to any already specified by the project. Therefore editing a
+project file manually or recreating it with the --create-project
+option may sometimes be required to precisely set the required
+options.
+
+Note that the following options are not written to project settings files.
+--verbose
+--project-file
+--create-project
+--update-project
+--license-request
+--license-file
+--version
+--help
+
+
+5. ERROR REPORTING
+
+Syntax errors are reported in emacs/xemacs style format of
+
+  filename:line number:message
+
+This offers easy integration with emacs/xemacs and direct access to the point
+of error in source files. For example, given a directory of PHP files called
+'myproject', running the xemacs 'compile' command and specifying the compiler
+as:
+
+  ioncube_encoder -S myproject
+
+will syntax check all php files and reports errors in an emacs buffer. 
+With the default xemacs key bindings, simply hitting ctrl-X ` will run the
+'next-error' function and visit each file with an error and place the cursor
+at the line containing the error.
+
+
+6. TROUBLE SHOOTING
+
+Here are some common Unix related errors that you may encounter when using
+the Encoder for the first time.
+
+6.1 Unable to run the Encoder
+
+If you receive an error similar to:
+
+$ ioncube_encoder
+bash: ioncube_encoder: command not found
+
+This is because the directory where the encoder is installed is not listed
+in the shell PATH variable. When entering just the name of a program, 
+and even if your current directory is where the ioncube_encoder program is, 
+the program will only be found if '.' (dot) is one of the paths listed in the
+PATH environment variable. Dot is an alias for whatever the current directory
+is.
+
+To resolve this, either prefix the program with the path to the program, e.g.
+
+$ ./ioncube_encoder
+
+if the encoder is in the current directory, or whatever the correct path to
+the program is, or add the program path to the PATH variable. 
+
+For example, If using bash as your shell, edit the .bashrc file that should 
+exist in your home directory and add the directory path to where the program 
+is installed to the PATH variable. 
+
+Start another shell, or in your home directory type 
+
+$ . .bashrc
+
+to re-read the .bashrc file and for changes to take effect.
+
+
+6.2 Warnings of Corrupted or Expired Files
+
+This can particularly happen when files have been transferred via windows 
+systems. Files are binary, and need to be transferred in binary mode between
+systems, but to some programs they can look like ascii (text) files. 
+Windows and Unix use different characters for representing line-breaks, and
+some windows software will attempt to convert line-breaks between the Unix
+style and Windows style automatically. This corrupts the files and they will
+fail to run.
+
+Two such programs are FTP programs, and the 'TAR Smart CR/LF conversion'
+feature of WinZIP. Be sure to use binary mode with FTP, and to disable the
+WinZIP smart conversion feature.
+
+One way to determine whether files have been corrupted is to use the Unix
+md5sum program. Run this on possibly corrupted files on the machine where
+you encoded the files and on the machine where the files are being run. If the
+output is different (i.e. a different checksum) then you know for sure that the
+files have been corrupted between the machines.
+
+Also please note that editing files to make changes to the PHP code at the
+start will also corrupt them. Instead, be sure to use the features of the 
+Encoder that are provided for customising parts or all of the header at the
+time of encoding.
+
+
+7.0 Support for Loader API
+
+The verison 2 Loader contains an API, and provides a few functions that 
+may be useful to encoded software. The Loader User Guide is included as 
+a separate document to this User Guide, and is recommended reading.
+
+
+Copyright (c) 2002-2003 ionCube.com                   Last revised 03-Jul-2003

@@ -1,0 +1,291 @@
+              The ionCube Encoder - Version 6 (Evaluation Version)
+              ----------------------------------------------------
+
+
+                         Q U I C K   R E F E R E N C E
+                         -----------------------------
+
+This Quick Reference guide provides a summary of all available command line
+options in the Encoder evaluation.
+
+
+-k <eval key>
+
+Specify the evaluation key for this copy of the Encoder.
+
+
+-S | --syntax-check
+Check the syntax of a file or directory. No encoding is performed, but files
+are parsed and any errors reported. Multiple command arguments may be 
+specified, and each is syntax checked in turn. Each argument may be a file
+or a directory.
+
+e.g.
+
+ioncube_encoder -S file1.php project-x.php index.php
+
+where file1.php and index.php are files, and project-x.php is a directory.
+
+
+-o <target file or directory>
+Specify the target file or directory. e.g. 
+
+ioncube_encoder test.php -o test-encoded.php
+ioncube_encoder test-project -o test-project-encoded
+
+
+--into <directory>
+Alternative to -o for specifying an encoding target. Specifies the
+directory to encode files or directories into, rather than the 
+output name itself. When using --into, more than one source file or
+directory may be specified at the same time.
+
+ioncube_encoder test.php --into /home/me/encoded-files
+ioncube_encoder *.php --into /home/me/encoded-files
+ioncube_encoder myproject mylibs --into /home/me/release
+
+
+--ascii
+Use ASCII encoding for encoded files. This is the default setting.
+
+
+--binary
+Use binary encoding for encoded files.
+
+
+--allow-encoding-into-source
+Allow the encoding target to be within the source tree. The encoder normally 
+attempts to prohibit encoding directories into the target directory to
+prevent unexpected results or accidental overwriting of source files.
+
+
+--project-file=<file>
+Specify an optional file from which to read the options used when running
+the encoder. If the file already exists when the encoder is run then options
+are read from the file. Any other command line options are processed after
+those in the file and add to or override those from the file. 
+
+
+--create-project
+Encoder settings are taken from the command line only and the project file
+specified with --project-file is created or overwritten with those options.
+
+
+--update-project
+Encoder settings are read from the project file specified with --project-file
+and those settings plus any extra command options are written back to the
+project file. 
+
+
+--use-hard-links
+When encoding a directory, use hard links to add non-encoded files into the
+destination directory structure rather than copying.
+
+
+--only-include-encoded-files
+When encoding a directory hierarchy only include encoded files into the
+destination directory structure.
+
+
+--encode=<pattern> | --copy=<pattern>
+Encode or copy files or directories matching <pattern>. Patterns ending
+with a trailing '/' match directories. These options may be specified 
+more than once, and are applied in order when determining whether
+or not a file or directory should be encoded or copied. 
+The default rules will encode all files matching *.php, *.php3, *.php4 
+or *.phtml in all directories. Copying a directory copies files in that
+directory and all subdirectories. Subdirectories may then be encoded again
+with --encode. e.g --copy=a/ --encode=a/b/c would copy files in
+directories a, a/b, a/d, but encode files in a/b/c, a/b/c/c1 etc. 
+For compatibility with previous versions, --include is an alias for --encode,
+and --exclude is an alias for --copy.
+
+
+--without-keeping-file-perms
+Don't apply file permissions from source files to target files.
+
+
+--without-keeping-file-times
+Don't apply file access times from source files to target files.
+
+
+--without-keeping-file-owner
+Don't apply file ownership from source files to target files when 
+running the encoder as root.
+
+
+--apply-file-user=<user id/name>
+Apply the given file user id or name to target files instead of the
+source file user id when running the encoder as root.
+
+
+--apply-file-group=<group id/name>
+Apply the given file group id or name to target files instead of the
+source file group id when running the encoder as root.
+
+
+--rename-target
+Rename the target file/directory if it already exists.
+
+
+--replace-target
+Replace the target file/directory if it already exists.
+
+
+--merge-target
+Merge source files into an already existing target directory.
+
+
+--allow-asp-tags
+Allow the tags <% and %> to be recognised as delimiters for PHP code.
+
+
+--no-short-open-tags
+Disables <? as starting PHP code. 
+
+
+--strict-php
+Enable strict checking of PHP usage. This enables warnings if the
+deprecated language feature of passing a variable by reference in
+a function call is used.
+ 
+
+--expire-on=<yyyy-mm-dd>
+Expire files on the given date. [Pro and Cerberus editions]
+
+
+--expire-in=<period>
+Expire files this period after encoding. The period is given 
+as <number><factor>, where <factor> may be one of s,m,h,d,w to denote 
+seconds, minutes, hours, days or weeks. e.g. 'expire-in 7d' means expire
+in 7 days. [Pro and Cerberus editions]
+
+
+--allowed-server [<server names>][@<ip addresses>][{<MAC address>}]
+Specify a server that scripts are allowed to run on. Each server specification
+may optionally contain one or more server names, one or more IP addresses,
+and a single MAC address. [IP and server name restrictions available in
+Pro and Cerberus editions. MAC restrictions available in Cerberus]
+
+e.g.
+
+Single IP
+--allowed-server 192.168.1.8 
+
+IP Range 192.168.1.5 to 192.168.1.9
+--allowed-server 192.168.1.5-9
+
+Servername www.foo.com
+--allowed-server www.foo.com 
+
+Servername www.foo.com on IP 192.168.1.2
+--allowed-server www.foo.com@192.168.1.2
+
+Servernames www.foo.com and foo.com on either 192.168.1.2 or 192.168.1.8
+www.foo.com,foo.com@192.168.1.2,192.168.1.8 
+
+Servername www.foo.com on MAC 00:02:08:02:e0:c8 
+www.foo.com{00:02:08:02:e0:c8}
+
+
+--without-runtime-loader-support
+Don't generate encoded files capable of installing the Loader at runtime.
+By default encoded files are generated that will attempt to find and install
+the Loader at runtime if the Loader is not already installed. You may want
+to use this option if you know that encoded files will always be used on
+a system where the Loader is installed as an extension in php.ini, and files
+will be slightly smaller.
+
+
+--message-if-no-loader=<message>
+Specify the argument that gets passed to the PHP die() function if no loader
+can be installed. 
+
+
+--action-if-no-loader=<php code>
+Specify action to be performed if no loader can be installed
+
+
+--loader-path=<path>
+Specify the loader name and path for dynamic loading
+
+
+--preamble-file=<file>
+Take the entire file preamble from <file>. And comments specified with
+-add-comments or --add-comment will still be added.
+
+
+--add-comments=<file>
+Add arbitrary text to header from file as comment lines
+
+
+--add-comment=<text>
+Add text as a comment to header
+
+
+--optimise <more|max>
+--optimize <more|max>
+Use more or the maximum processing to produce the most efficient files. 
+
+
+--property 'name[=value][, ...]' or --properties 'name[=value][, ...]'
+Define named properties for encoded files and an optional value for the
+property. Properties can be read via the Loader API and their existence
+made a requirement for being included. Values can be numeric,
+a string (optionally delimited by ' or "), or an array, delimited by
+{ }. Separate multiple property definitions by ','. These two options
+are aliases for each other.
+
+
+--include-if-property 'name=[value][, ...]'
+Only permit file to be included if the given property or properties are all
+defined by the file doing the include. May be used more than once to specify
+multiple sets of valid properties.
+
+
+--disallow-untrusted-extensions
+Do not allow encoded files to be usable on a server that has an untrusted
+(e.g. opensource) engine extension installed. By default, encoded files 
+are allowed to be run.
+
+
+--loader-event '<event>=<message>'
+Customise the message of an event triggered in the Loader.
+
+<event> should be the event type to customise and <message> is the text
+to associate with the event. <event> and may be one of:
+
+corrupt-file - triggered when a corrupted file is detected
+expired-file - triggered when a file has reached its expiry time
+no-permissions - triggered when a file with an ip restriction is not met
+clock-skew - triggered when a file is used where the system clock is set more
+             than 24 hours prior to the file being encoded
+untrusted-extension - triggered when an encoded file is used on a system with
+             with an untrusted extension installed. 
+             (See --disallow-untrusted-extensions above)
+
+
+--no-doc-comments
+PHP 5 exposes documentation comments via the reflection API. By default these 
+comments are also present in encoded files, but they can be suppressed using the 
+--no-doc-comments option.
+
+
+--verify
+Verify that each encoded file is a valid PHP file and can be read by a PHP
+system not running the Loader.
+
+
+-v | --verbose
+Display information during encoder operations.
+
+
+-V | --version
+Display version information.
+
+
+-h | --help
+Display help.
+
+
+Copyright (c) 2002-2005 ionCube Ltd.                  Last revised 17-June-2005

@@ -1,0 +1,193 @@
+Im folgenden sehen Sie eine Zusammenfassung der Encoder Befehlsoptionen. 
+Für weitere Details sehen Sie bitte im Benutzerhandbuch nach. 
+
+-S | --syntax-check
+Überprüft die Syntax einer Datei oder eines Verzeichnisses.
+
+-o <Zieldatei oder -verzeichnis>
+Gibt die Zieldatei oder das Zielverzeichnis an.
+
+--into <Verzeichnis>
+Alternative Angabe des Verschlüsselungsziels. Gibt ein Verzeichnis an, 
+in welchem die verschlüsselten Dateien gespeichert werden.
+
+--expire-on <jjjj-mm-tt>
+Gültigkeit der Dateien läuft am <jjjj-mm-dd> ab.
+
+--expire-in <Zeitperiode>
+Gültigkeit der Dateien läuft nach einer angegebenen <Zeitperiode> ab, 
+z.B. 7d oder 8h (7 Tage oder 8 Stunden).
+
+--use-hard-links
+Verwendet "harte" Links, um nicht verschlüsselte Dateien zu dem 
+Zielverzeichnis hinzuzufügen.
+
+--only-include-encoded-files
+Kopiert verschlüsselte Dateien in ein Zielverzeichnis.
+
+--include <Suchmuster> | --exclude <Suchmuster>
+Schließt bestimmte Dateien und Verzeichnisse von der Verschlüsselung aus, 
+die mit dem angegebenen <Suchmuster> übereinstimmen. Dateien, die explizit 
+mit --exclude von der Verschlüsselung ausgeschlossen werden, werden 
+unverschlüsselt in das Zielverzeichnis kopiert.
+
+--keep <Suchmuster> | --ignore <Suchmuster>
+Schließt bestimmte Dateien und Verzeichnisse von der Aufnahme ins 
+Zielverzeichnis aus, die mit dem angegebenen <Suchmuster> übereinstimmen. 
+Z.B. --ignore RCS/ --ignore '*~'
+
+--allow-asp-tags
+Erlaubt die Verwendung von ASP-Tags <% und %> als Umschließungszeichen 
+für PHP-Code.
+
+--no-short-open-tags
+Verbietet die Verwendung der Kurzform der PHP-Umschließungszeichen <? und ?> 
+für PHP-Code.
+
+--strict-php
+Verwendet eine strengere Überprüfung des PHP-Codes. Diese Option gibt 
+Warnungen aus, wenn veraltete Sprachmerkmale oder die Übergabe von Variablen 
+per Referenz in Funktionsaufrufen verwendet werden.
+ 
+--without-keeping-file-perms
+Keine Übernahme der Dateirechte der Quelldateien für die Zieldateien.
+
+--without-keeping-file-times
+Keine Übernahme der Dateizugriffszeit der Quelldateien für die Zieldateien.
+
+--without-keeping-file-owner
+Keine Übernahme des Eigentümers der Quelldateien für die Zieldateien, wenn 
+der Encoder als Root ausgeführt wird.
+
+--apply-file-user <uid/Benutzername>
+--apply-file-group <gid/Gruppenname>
+Übernimmt angegebene Benutzer-/Gruppen-ID oder -Namen für Zieldateien, wenn 
+der Encoder aus Root ausgeführt wird.
+
+--rename-target
+Nennt die Zieldatei bzw. das Zielverzeichnis um, falls diese bereits 
+vorhanden sind.
+
+--erase-target
+Löscht die Zieldatei bzw. das Zielverzeichnis, falls diese bereits 
+vorhanden sind.
+
+--merge-target
+Mischt die Quelldateien mit denen bereits existierenden Dateien in einem 
+Zielverzeichnis.
+
+--optimise <more|max>
+--optimize <more|max>
+Verwendet verschiedene Intensitätsstufen ('more' oder 'max') in der 
+Verarbeitung, um noch effizientere Dateien zu erhalten.
+
+--allowed-server [<Servernamen>][@<IP-Addressen>][{<MAC-Adressen>}]
+Spezifiziert einen Server, auf dem die verschlüsselten Skripte ausgeführt 
+werden dürfen. Die Spezifikation kann optional eine(n) oder mehrere 
+Servernamen oder IP-Adressen und eine einzige MAC-Adresse enthalten.
+z.B.
+192.168.1.8 (eine IP)
+192.168.1.5-9 (ein IP-Bereich 192.168.1.5 bis 192.168.1.9)
+www.foo.com (den Servernamen www.foo.com)
+www.foo.com@192.168.1.2 (www.foo.com auf IP 192.168.1.2)
+www.foo.com{00:02:08:02:e0:c8} (www.foo.com auf MAC 00:02:08:02:e0:c8)
+Für weitere Details sehen Sie bitte im Handbuch nach.
+
+--verify
+Stellt sicher, dass jede verschlüsselte Datei eine gültige PHP-Datei ist und
+von einem PHP-System ohne installierten Loader gelesen werden kann.
+
+--without-runtime-loader-support
+Erstellt verschlüsselte Dateien ohne Routinen zur Installation des Loaders 
+bei Ausführung.
+
+--without-loader-check
+impliziert die Option --without-runtime-loader-support und erstellt keine 
+Preambel.
+
+--message-if-no-loader <Text>
+<Text> enthält eine Nachricht, die erscheint, falls kein Loader auf dem
+PHP-System installiert ist.
+
+--action-if-no-loader <php code>
+<php code> enthält Anweisungen die ausgeführt werden, falls kein Loader auf
+dem PHP-System installiert ist.
+
+--loader-path <Pfad>
+Gibt den Pfad und Loader-Namen für dynamisches Laden des Loaders an.
+
+--preamble-file <Datei>
+Verwendet den Inhalt von <Datei> als Preambel. Kommentare, die mit den
+Schaltern --add-comments oder --add-comment gesetzt werden, werden trotzdem
+hinzugefügt.
+
+--add-comments <Datei>
+Fügt beliebigen Text aus einer <Datei> in den Kopf als Kommentar ein. 
+Kann beliebig oft verwendet werden.
+
+--add-comment <Text>
+Fügt beliebigen <Text> in den Kopf als Kommentar ein. 
+Kann beliebig oft verwendet werden.
+
+--project-file <Datei>
+Entnimmt Encoder-Optionen aus der angegebenen <Datei>, gefolgt von 
+beliebigen anderen Optionen auf der Kommandozeile.
+
+--create-project
+Wurde ein Projektdateiname spezifiziert, wird aus den übergebenen 
+Befehlszeilenoptionen diese Projektdatei erstellt. Wenn die Projektdatei 
+bereits existiert, wird sie überschrieben.
+
+--update-project
+Wurde ein Projektdateiname spezifiziert, wird diese Datei mit den 
+Befehlszeilenoptionen sowie den möglicherweise aus einer bereits 
+eingelesenen Projektdatei vorhandenen Optionen aktualisiert.
+
+--allow-encoding-into-source
+Erlaubt, dass das Verschlüsselungsziel innerhalb des Quellbaums liegt. 
+Normalerweise versucht der Encoder dieses Vorgehen aus Sicherheitsgründen 
+zu verhindern, um zu vermeiden, dass Quelldateien unabsichtlich 
+überschrieben werden.
+
+--loader-event 'Schlüssel=Text'
+Gibt eine benutzerdefinierte Nachricht an, falls ein Fehler im Loader 
+auftritt. "Schlüssel" kann vom Wert 'corrupt-file','expired-file',
+'no-permissions','clock-skew' sein. "Text" ist die benutzerdefinierte 
+Nachricht für den Loader, falls eine Datei beschädigt ('corrupt-file')
+oder abgelaufen ('expired-file') ist, falls keine IP-Berechtigungen 
+vorliegen ('no-permissions') oder auch falls die Systemuhrzeit 24 Stunden 
+vor dem Zeitpunkt der Datei-Verschlüsselung liegt ('clock-skew'). 
+Die Nachricht kann Formatierungszeichen enthalten, die bei Laufzeit 
+ausgeführt werden. %f wird durch die Datei ersetzt, die das Fehlerereignis 
+erzeugt hat und %p gibt den Grund aus.
+
+--property 'name[=value][, ...]' or --properties 'name[=value][, ...]'
+Definiert benannte Eigenschaften für eine Datei und optional Werte für 
+diese Eigenschaften. Eigenschaften können über die Loader-API gelesen 
+werden, wobei ihre Existenz eine Voraussetzung für ihre Aufnahme darstellen. 
+Werte können numerischer Art, Zeichenketten (optional abgetrennt 
+durch ' oder ") oder ein Array, eingeschlossen in { } sein. 
+Mehrere Definitionen von Eigenschaften werden durch ',' getrennt. 
+Diese zwei Optionen sind Aliases für einandern.
+
+--include-if-property 'name=[value][, ...]'
+Erlaubt das Inkludieren einer Datei nur, wenn die angegebene Eigenschaft 
+bzw. die angegebenen Eigenschaften alle von der einzuschließenden Datei 
+definiert werden. Diese Option kann öfters verwendet werden, um mehrere 
+Sätze gültiger Eigenschaften zu spezifizieren.
+
+-k <Evaluationsschlüssel> | --key <Evaluationsschlüssel>
+Gibt den Evaluationsschlüssel für diese Kopie des Encoders an.
+
+-v | --verbose
+Gibt während der Verschlüsselung detailierte Informationen aus.
+
+-V | --version
+Gibt Versionsinformationen aus.
+
+-h | --help
+zeigt die Hilfe an.
+
+Für eine vollständige und detailierte Liste aller Optionen sehen Sie bitte 
+im ionCube Encoder Handbuch nach.
+

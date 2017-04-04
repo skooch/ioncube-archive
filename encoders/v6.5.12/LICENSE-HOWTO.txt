@@ -1,0 +1,106 @@
+                    The ionCube Encoder - Version 6.5
+                    ---------------------------------
+
+LICENSING YOUR ENCODER
+----------------------
+
+Your Encoder comes with an allocation of 1 or more unassigned licenses.
+Each license can be assigned to any machine having an Ethernet network adaptor.
+
+The licensing process has two simple steps, described below.
+
+  * Generating a license key request and sending it to us.
+  * Installing a license file from us.
+
+
+GENERATING A LICENSE KEY REQUEST
+--------------------------------
+
+To assign a license you must first generate a license request. The Encoder
+can do this for you:
+
+* On Unix, run the Encoder with the --license-request option on the machine
+  where you wish to use the Encoder. The Encoder will create a license
+  request file for each network interface installed into your computer. 
+  It will also display the name of each interface found and the name of the
+  file it created containing the license request. If the Encoder was unable
+  to create license request files then the request data will be displayed
+  instead. Your network interfaces do not need to be connected to any network
+  but must be visible to the operating system.
+
+  The license on Unix may be affected if the Encoder is moved, and it is
+  recommended that you generate the license request from the location where 
+  you expect to use the Encoder. Installing to a temporary directory, creating
+  a license request and then moving the Encoder installation may invalidate the
+  license when you receive it. 
+
+* On Windows there is an item in the ionCube program group for creating
+  licenses. Click the Start menu, and in the ionCube entry, select
+  the "License Request Generator" item.
+
+If there is no output then there may be no active Ethernet interface for that
+machine. You sould rememdy this and try again. Please note that no information
+is sent from your machine to us at any point, and the network interface does
+need to be physically connected to any network, just visible to the operating
+system.
+
+
+SUBMITTING YOUR LICENSE REQUEST
+-------------------------------
+
+Email the license request file to us at licenses@ioncube.com for the machine
+that you wish to use. If a machine has more than one interface, send a
+request for the interface that is least likely to change, and most likely
+to be active or possible to make active. If you have a choice between a 
+wireless card and a wired adaptor, the wired adaptor is likely to be the 
+better choice to license.
+
+Your license request may be processed automatically, and in this case you will
+be sent an email response within a few seconds. If the request could not
+be processed automatically, it will be handled as soon as possible by 
+the licensing department, and you will receive a response once this has been
+done.  
+
+* Using DHCP?
+
+Using DHCP is not a problem as the IP address is not used for licensing
+purposes. It is shown in the license request data, but this is only to help
+you identify which adaptor is which.
+
+
+INSTALLING YOUR LICENSE
+-----------------------
+
+When we receive your license request we will email you back with instructions
+for installing a license file. Once this has been completed, your Encoder
+will then be licensed and fully operational. If you have any problems then
+please submit a support ticket at
+
+	http://support.ioncube.com
+
+
+WHAT IF I WANT TO TRANSFER MY LICENSE?
+--------------------------------------
+
+We have provided a simple mechanism for transferring your Encoder license to
+a new machine. It is necessary first to revoke your license on the old 
+machine. On Unix, run the Encoder with the option --revoke-license. 
+On Windows there is a menu option on the Windows Start/ionCube program 
+menu group. This will produce a revoke file with filename starting
+'revoke_file' in the same directory as the Encoder. 
+
+Send the revoke file to licenses@ioncube.com and we will free your license.
+You can then install the Encoder on the new machine, and submit a new license
+request from the new macbine as described above.
+
+It is important to revoke your old license before removing your old Encoder
+installation as the revoke file confirms for us that the Encoder has been
+uninstalled. 
+
+The revoke feature should be used when it is necessary to permanently 
+transfer a license to a new machine. This feature is not intended to be
+used frequently as a way to effectively license two machines - the Encoder
+is licensed on a per-machine basis and so a second license would be needed
+to use more than one machine on a regular basis.
+
+Copyright (c) 2002-2007 ionCube Ltd.                 Last revised 5-Jan-2007

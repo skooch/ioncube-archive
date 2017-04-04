@@ -1,0 +1,74 @@
+                    The ionCube Encoder - Version 6
+                    -------------------------------
+
+LICENSING YOUR ENCODER
+----------------------
+
+Your encoder comes with an allocation of 1 or more unassigned licenses.
+Each license can be assigned to any machine having an Ethernet network adaptor.
+
+The licensing process has two simple steps, described below.
+
+  * Generating a license key request and sending it to us.
+  * Downloading and installing a license file from us.
+
+
+GENERATING A LICENSE KEY REQUEST
+--------------------------------
+
+To assign a license you must first generate a license request. The encoder
+can do this for you:
+
+* Run the encoder with the --license-request option on a machine where you
+  wish to use the encoder. The Encoder will attempt to create a license
+  request file for each network interface installed into your computer. 
+  It will also display the name of each interface found and the name of the
+  file it created containing the license request. If the Encoder was unable
+  to create license request files then the request data will be displayed
+  instead. Your network interfaces do not need to be connected to any network
+  but must be configured with an IP address.
+
+If there is no output then there may be no Ethernet interface for that
+machine. Please contact us at support@ioncube.com in that case.
+
+On Windows there is an item in the ionCube program group for creating
+licenses. Click the Start menu, and in the ionCube entry, select
+the "License Request Generator" item.
+
+
+SUBMITTING YOUR LICENSE REQUEST
+-------------------------------
+
+Email the license request to us at licenses@ioncube.com for the machine(s)
+that you wish to use. If a machine has more than one interface, send a
+request for the interface least likely to change on the machine. Licensing
+to a removable network is also recommended if at all possible.
+
+Your license request may be processed automatically, and in this case you will
+be sent an email response within a few seconds. If the request could not
+be processed automatically, it will be handled as soon as possible by 
+the licensing department, and you will receive a response once this has been
+done.  
+
+
+INSTALLING YOUR LICENSE
+-----------------------
+
+When we receive your license request we will email you back with instructions
+for installing a license file. Once this has been completed, your encoder
+will then be licensed and fully operational. If you have any problems then
+please contact us at support@ioncube.com
+
+
+WHAT IF MY NETWORK CARD BREAKS OR IF I CHANGE MY MACHINE?
+---------------------------------------------------------
+
+We are flexible about relicensing customers when there is a genuine need to
+do so, however network cards are actually very reliable. They provide a
+cheap and convenient 'dongle' to license against, and failure is unlikely.
+We do recommend licensing to a removable network card if you can so that 
+it may be moved into a new machine in the future. This will also assist in
+handling any relicense requests in the future.
+
+
+Copyright (c) 2002-2005 ionCube Ltd.                 Last revised 17-June-2006
